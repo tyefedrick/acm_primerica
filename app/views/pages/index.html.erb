@@ -10,14 +10,136 @@
     <div class="row">
       <div class="col">
         <p>First & Last Name</p>
+          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="First Name">
+          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Last Name">
       </div>
       <div class="col">
         <p>Who is your RVP?</p>
+        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Who is your RVP?">
       </div>
       <div class="col">
         <p>Rep Solution Number</p>
+        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="5 Digit Solution Number">
       </div>
     </div>
+  </div>
+
+  <div class="box p-4 rounded border border-primary text-center">
+    <h2>Annual Compliance Meeting <%= Time.now.year %> (Life)</h2>
+    <p>I have reviewed and understand the compliance rules and regulations noted in the Annual Compliance Meeting presentation, have completed the Annual Compliance Section of the Program, and have reviewed the Representations for Primerica Representatives published with the Workbook on POL. Any representation that I cannot make is noted on the Disclosure and/or Discrepancies form on the back of this page with a brief explanation. – Use the lines at the bottom of the form and/or a separate sheet.</p>
+    <ul>
+      <li>
+        I have new disclosures and/or discrepancies to report that have not been previously reported to Primerica, and I have done so on the <%= Time.now.year %> ACM Disclosure and/or Discrepancies form (located on the back of this page).
+      </li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <p>
+    By signing below, I certify that I have personally attended and correctly completed the <%= Time.now.year %> Annual Compliance Meeting, as required by the licenses I hold or the products I sell. My signature makes me accountable for compliance with the law and with Primerica ethics and compliance policies. I will use due diligence to ensure that my business conduct, the conduct of those I supervise, and the business conduct of my associates, is in compliance with the law and with Primerica policy.
+    </p>
+
+    <p>
+    By signing below, I also certify that I have read and accurately completed the <%= Time.now.year %> ACM Disclosure and/or Discrepancies (if applicable) on the reverse side of this form.
+    </p>
+
+    <p>
+    I will report any suspected violation of a law, regulation or Primerica compliance standard, and any request made of me to do anything improper or illegal, to my upline RVP, to my OSJA and to appropriate members of the Office of the General Counsel. I have reported any such matters arising in <%= Time.now.year %> to such persons. Any disclosures not previously made to such persons are included in detail on the reverse side on the Disclosures and/or Discrepancies form.
+    </p>
+
+    <p>
+    I will require of myself, and will expect from my fellow Reps, the highest level of ethical conduct.
+    </p>
+  </div>
+
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Rep's E-Signature">
+          <p>Rep's E-Signature</p>
+          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Rep's Name">
+          <p>Rep's Printed Name (as signed)</p>
+         <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Date">
+          <p>Date</p> 
+      </div>
+
+      <div class="col">
+        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="OSJA or RVP Principal/Proctor's E-Signature">
+       <p>OSJA or RVP Principal/Proctor's E-Signature</p> 
+       <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Date">
+          <p>Date</p> 
+      </div>
+
+  <div class="text-center">
+    <h5><%= Time.now.year %> ACM DISCLOSURES AND/OR DISCREPANCIES
+    </h5>
+  </div>
+
+  <div class="container">
+      <p>Use this form to explain Representation(s) as outlined in the respective section of the <%= Time.now.year %> Workbook (published on POL) for products which you are authorized to represent and that you do not meet in the year <%= Time.now.year %> or that you do not agree to meet. Be sure to provide any available supporting documents, which may include, but not be limited to, court orders, written procedures, authorizations, lists of individuals involved, addresses and phone numbers for individuals involved. If you report disclosures or discrepancies on this form, you must provide your RVP with a copy. Call the Compliance Help Desk at 1-800-243-8901 with any questions regarding discrepancies/disclosures.
+      </p>
+      <p>
+      Your signature on the first part of the form certifies the accuracy of the information on this page.
+      </p>
+  </div>
+
+<div class="box p-4 rounded border border-primary text-center">
+    <p>Check the applicable disclosure(s) you are making and follow the additional instructions:</p>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-check">
+            <%= check_box_tag 'home_address_change', '1', false, class: 'form-check-input' %>
+            <%= label_tag 'home_address_change', 'Home address change' %>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-check">
+            <%= check_box_tag 'employment_change', '1', false, class: 'form-check-input' %>
+            <%= label_tag 'employment_change', 'Changes in employment which may constitute a conflict of interest (refer to Conflict of Interest Chart on POL > Compliance > Quick Links > OBA/PST > Chart of Potential Conflicts of Interest)
+            For the item listed directly above, a written explanation of the facts must also be completed and attached.' %>
+          </div>
+      </div>
+
+      <br>
+      <br>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-check">
+            <%= check_box_tag 'employment_change_1', '1', false, class: 'form-check-input' %>
+            <%= label_tag 'employment_change_1', 'Bankruptcy, Judgment, or Lien' %>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-check">
+            <%= check_box_tag 'employment_change_2', '1', false, class: 'form-check-input' %>
+            <%= label_tag 'employment_change_2', 'Regulatory Action' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-check">
+            <%= check_box_tag 'employment_change_1', '1', false, class: 'form-check-input' %>
+            <%= label_tag 'employment_change_1', 'Civil Suit' %>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-check">
+            <%= check_box_tag 'employment_change_2', '1', false, class: 'form-check-input' %>
+            <%= label_tag 'employment_change_2', 'Misdemeanor or Felony Charge(s) and/or Conviction(s)' %>
+          </div>
+        </div>
+      </div>
+    <p>For all items listed directly above, you must attach certified copies of the related legal documents, along with a written explanation of the facts.</p>
+
+    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Insert additional details here.">
+</div>
+
+
+
   </div>
 
 </body>
