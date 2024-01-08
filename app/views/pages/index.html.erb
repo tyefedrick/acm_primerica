@@ -1,3 +1,10 @@
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+</head>
+
+<div id="pdf-content">
+
 <div class="text-center">
     <h1><%= Time.now.year %> ACM Response and Disclosure Form
     </h1>
@@ -135,7 +142,37 @@
     <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Insert additional details here.">
 </div>
 
-
+<button id="download">Download as PDF</button>
 
 </div>
 
+</div>
+
+
+<script>
+document.getElementById('download').addEventListener('click', () => {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const content = document.getElementById('pdf-content');
+
+  // Check if the content element is found
+  if (!content) {
+    alert('Content not found');
+    return;
+  }
+
+  // Hide the download button
+  document.getElementById('download').style.display = 'none';
+
+  html2canvas(content, { scale: .5 }).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    doc.addImage(imgData, 'PNG', 10, 10);
+    doc.save('form.pdf');
+    document.getElementById('download').style.display = 'block';
+  }).catch(err => {
+    console.error('Error generating canvas:', err);
+    document.getElementById('download').style.display = 'block';
+  });
+});
+</script>
