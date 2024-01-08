@@ -28,6 +28,7 @@
     </div>
   </div>
 
+<div class="container text-center">
   <div class="box p-4 rounded border border-primary text-center">
     <h2>Annual Compliance Meeting <%= Time.now.year %> (Life)</h2>
     <p>I have reviewed and understand the compliance rules and regulations noted in the Annual Compliance Meeting presentation, have completed the Annual Compliance Section of the Program, and have reviewed the Representations for Primerica Representatives published with the Workbook on POL. Any representation that I cannot make is noted on the Disclosure and/or Discrepancies form on the back of this page with a brief explanation. – Use the lines at the bottom of the form and/or a separate sheet.</p>
@@ -37,7 +38,7 @@
       </li>
     </ul>
   </div>
-
+</div>
   <div class="container">
     <p>
     By signing below, I certify that I have personally attended and correctly completed the <%= Time.now.year %> Annual Compliance Meeting, as required by the licenses I hold or the products I sell. My signature makes me accountable for compliance with the law and with Primerica ethics and compliance policies. I will use due diligence to ensure that my business conduct, the conduct of those I supervise, and the business conduct of my associates, is in compliance with the law and with Primerica policy.
@@ -165,7 +166,7 @@ document.getElementById('download').addEventListener('click', () => {
   // Hide the download button
   document.getElementById('download').style.display = 'none';
 
-  html2canvas(content, { scale: .5 }).then(canvas => {
+  html2canvas(content, { scale: .55 }).then(canvas => {
     const imgData = canvas.toDataURL('image/png');
     doc.addImage(imgData, 'PNG', 10, 10);
     doc.save('form.pdf');
