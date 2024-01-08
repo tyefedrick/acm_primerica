@@ -1,12 +1,17 @@
 <nav class="navbar navbar-expand-lg">
+ 
   <div class="container">
-
     <a class="navbar-brand" href="#">
       ACM
     </a>
-
-    
   </div>
+
+  <% if user_signed_in? %>
+    <%= link_to 'Dashboard', dashboard_path %>
+    <!-- other links for logged-in users -->
+    <% else %>
+      <!-- links for non-logged-in users -->
+  <% end %>
 
   <% if user_signed_in? %>
   <div class="alert alert-success">
