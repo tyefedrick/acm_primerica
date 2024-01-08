@@ -153,27 +153,30 @@
 <script>
 document.getElementById('download').addEventListener('click', () => {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
+  const doc = new jsPDF('portrait', 'mm', 'a4');
 
   const content = document.getElementById('pdf-content');
-
-  // Check if the content element is found
   if (!content) {
     alert('Content not found');
     return;
   }
 
-  // Hide the download button
-  document.getElementById('download').style.display = 'none';
+  document.getElementById('download').style.visibility = 'hidden';
 
-  html2canvas(content, { scale: .55 }).then(canvas => {
+  html2canvas(content, { scale: window.devicePixelRatio }).then(canvas => {
+    const imgWidth = 210; // A4 width in mm
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    const x = 0;
+    const y = 0;
+
     const imgData = canvas.toDataURL('image/png');
-    doc.addImage(imgData, 'PNG', 10, 10);
+    doc.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
     doc.save('form.pdf');
-    document.getElementById('download').style.display = 'block';
+    
+    document.getElementById('download').style.visibility = 'visible';
   }).catch(err => {
     console.error('Error generating canvas:', err);
-    document.getElementById('download').style.display = 'block';
+    document.getElementById('download').style.visibility = 'visible';
   });
 });
 </script>
