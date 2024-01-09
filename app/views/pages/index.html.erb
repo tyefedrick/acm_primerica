@@ -187,16 +187,16 @@ document.getElementById('download').addEventListener('click', () => {
         const imgHeight = canvas.height * imgWidth / canvas.width;
         const imgData = canvas.toDataURL('image/png');
         doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-        const todayDate = new Date().toLocaleDateString('en-US');
-        const filename = `${fullName} ACM Form ${todayDate}.pdf`;
+        const todayDate = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+        const filename = `${fullName} AMC Form ${todayDate}.pdf`;
 
         const pdfBlob = doc.output('blob');
 
         // Fetch CSRF token from meta tag
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        // Send the selected RVP and PDF data to your server
-        savePDFToDatabase(selectedRVP, pdfBlob, csrfToken).then(response => {
+        // Send the selected RVP, PDF data, full name, and formatted date to your server
+        savePDFToDatabase(selectedRVP, pdfBlob, csrfToken, fullName, todayDate).then(response => {
             const downloadLink = document.createElement('a');
             downloadLink.href = URL.createObjectURL(pdfBlob);
             downloadLink.download = filename;
@@ -215,10 +215,12 @@ document.getElementById('download').addEventListener('click', () => {
     });
 });
 
-function savePDFToDatabase(rvp, pdfBlob, csrfToken) {
+function savePDFToDatabase(rvp, pdfBlob, csrfToken, fullName, formattedDate) {
     let formData = new FormData();
     formData.append('pdf', pdfBlob);
     formData.append('rvp_id', rvp);
+    formData.append('full_name', fullName);
+    formData.append('formatted_date', formattedDate);
 
     // Include CSRF token in the request headers
     return fetch('/save-pdf', {

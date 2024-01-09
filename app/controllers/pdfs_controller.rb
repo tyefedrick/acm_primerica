@@ -12,6 +12,7 @@ class PdfsController < ApplicationController
 
     pdf = rvp.pdfs.build
     pdf.file.attach(io: params[:pdf].tempfile, filename: pdf_file_name, content_type: 'application/pdf')
+
   
       if pdf.save
         # Respond with success
