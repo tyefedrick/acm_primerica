@@ -64,6 +64,7 @@ class RvpsController < ApplicationController
 
   def all_files
     @pdfs = Pdf.all  # Or however you're fetching the PDF files
+    @rvps = Rvp.all
   end
 
   private

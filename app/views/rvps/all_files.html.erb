@@ -1,10 +1,11 @@
-<h1>All RVP Files</h1>
-<%# Assuming @pdfs is defined in your all_files action and contains all the PDF records %>
-<ul>
-  <% @pdfs.each do |pdf| %>
-    <li>
-      <% full_name = pdf.full_name %> <!-- Get the full name from the PDF model -->
-      <%= link_to "#{full_name} AMC Form #{pdf.formatted_date}.pdf", rails_blob_path(pdf.file, disposition: 'attachment') %>
-    </li>
-  <% end %>
-</ul>
+<% @rvps.each do |rvp| %>
+  <h2><%= "#{rvp.first_name} #{rvp.last_name}" %></h2>
+  <ul>
+    <% rvp.pdfs.each do |pdf| %>
+      <li>
+        <% full_name = pdf.full_name %> <!-- Get the full name from the PDF model -->
+        <%= link_to "#{full_name} AMC Form #{pdf.formatted_date}.pdf", rails_blob_path(pdf.file, disposition: 'attachment') %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
