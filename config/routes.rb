@@ -3,5 +3,9 @@ Rails.application.routes.draw do
   root "pages#index"
 
   get '/dashboard', to: 'dashboards#show'
+  
+  resource :dashboard, only: [:show] do
+    patch 'change_password', on: :member
+  end
 
 end
