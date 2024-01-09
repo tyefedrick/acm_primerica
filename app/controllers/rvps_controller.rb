@@ -57,6 +57,15 @@ class RvpsController < ApplicationController
     end
   end
 
+  def files
+    @rvp = Rvp.find(params[:id])
+    @pdfs = @rvp.pdfs
+  end
+
+  def all_files
+    @pdfs = Pdf.all  # Or however you're fetching the PDF files
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_rvp

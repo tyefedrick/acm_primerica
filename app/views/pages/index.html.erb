@@ -1,6 +1,7 @@
 <head>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+   <meta name="csrf-token" content="<%= form_authenticity_token %>">
 </head>
 
 <div id="pdf-content">
@@ -161,98 +162,76 @@
 
 
 <script>
-// Get the input element
-const todayDateInput = document.getElementById('todaysDate');
-
-// Create a new Date object with the current date in the user's local time zone
-const currentDate = new Date();
-
-// Get the year, month, and day
-const year = currentDate.getFullYear();
-const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // January is 0
-const day = String(currentDate.getDate()).padStart(2, '0');
-
-// Format the date as "YYYY-MM-DD"
-const formattedDate = `${year}-${month}-${day}`;
-
-// Set the default value of the input field to the current date
-todayDateInput.value = formattedDate;
-
 document.getElementById('download').addEventListener('click', () => {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('portrait', 'mm', 'a4');
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('portrait', 'mm', 'a4');
+    const content = document.getElementById('pdf-content');
+    if (!content) {
+        alert('Content not found');
+        return;
+    }
 
-  const content = document.getElementById('pdf-content');
-  if (!content) {
-    alert('Content not found');
-    return;
-  }
+    const fullName = document.getElementById('fullName').value;
+    const repSignature = document.getElementById('repSignature').value;
+    const selectedRVP = document.getElementById('rvp').value;
 
-  const fullName = document.getElementById('fullName').value; // Get the full name
-  const repSignature = document.getElementById('repSignature').value; // Get the value of the required field
-  const selectedRVP = document.getElementById('rvp').value; // Get the selected RVP
+    if (!repSignature) {
+        alert("Rep's E-Signature is required before downloading.");
+        return;
+    }
 
-  // Check if the required field is filled out
-  if (!repSignature) {
-    alert("Rep's E-Signature is required before downloading.");
-    return;
-  }
+    document.getElementById('download').style.visibility = 'hidden';
 
-  document.getElementById('download').style.visibility = 'hidden';
+    html2canvas(content, { scale: window.devicePixelRatio }).then(canvas => {
+        const imgWidth = 210; // A4 width in mm
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        const imgData = canvas.toDataURL('image/png');
+        doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        const todayDate = new Date().toLocaleDateString('en-US');
+        const filename = `${fullName} ACM Form ${todayDate}.pdf`;
 
-  html2canvas(content, { scale: window.devicePixelRatio }).then(canvas => {
-    const imgWidth = 210; // A4 width in mm
-    const imgHeight = canvas.height * imgWidth / canvas.width;
-    const x = 0;
-    const y = 0;
+        const pdfBlob = doc.output('blob');
 
-    const imgData = canvas.toDataURL('image/png');
-    doc.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
+        // Fetch CSRF token from meta tag
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    // Get today's date in the desired format (e.g., "YYYY-MM-DD")
-    const todayDate = new Date().toLocaleDateString('en-US');
-
-    // Set the filename for the downloaded PDF with today's date appended
-    const filename = `${fullName} ACM Form ${todayDate}.pdf`;
-
-    // Save the PDF with the specified filename
-    doc.save(filename);
-    
-    // Send the selected RVP and PDF data to your server to save in the database
-    savePDFToDatabase(selectedRVP, doc.output('blob')).then(response => {
-      // Handle the server response here, e.g., show a confirmation message
-      
-      // Provide a link for the user to download the PDF
-      const downloadLink = document.createElement('a');
-      downloadLink.href = URL.createObjectURL(doc.output('blob'));
-      downloadLink.download = filename; // Set the filename
-      downloadLink.textContent = 'Download PDF';
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
-      
-      document.getElementById('download').style.visibility = 'visible';
-    }).catch(error => {
-      // Handle any errors
-      console.error('Error saving PDF:', error);
-      document.getElementById('download').style.visibility = 'visible';
+        // Send the selected RVP and PDF data to your server
+        savePDFToDatabase(selectedRVP, pdfBlob, csrfToken).then(response => {
+            const downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(pdfBlob);
+            downloadLink.download = filename;
+            downloadLink.textContent = 'Download PDF';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            document.getElementById('download').style.visibility = 'visible';
+        }).catch(error => {
+            console.error('Error saving PDF:', error);
+            document.getElementById('download').style.visibility = 'visible';
+        });
+    }).catch(err => {
+        console.error('Error generating canvas:', err);
+        document.getElementById('download').style.visibility = 'visible';
     });
-  }).catch(err => {
-    console.error('Error generating canvas:', err);
-    document.getElementById('download').style.visibility = 'visible';
-  });
 });
 
-function savePDFToDatabase(rvp, pdfBlob) {
-  // Implement an HTTP request to send the selected RVP and PDF data to your server
-  // You'll need to handle this server-side to save the PDF in your database
-  // Example using fetch:
-  return fetch('/save-pdf', {
-    method: 'POST',
-    body: JSON.stringify({ rvp, pdfBlob }),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }).then(response => response.json());
+function savePDFToDatabase(rvp, pdfBlob, csrfToken) {
+    let formData = new FormData();
+    formData.append('pdf', pdfBlob);
+    formData.append('rvp_id', rvp);
+
+    // Include CSRF token in the request headers
+    return fetch('/save-pdf', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-Token': csrfToken // Include the CSRF token
+        }
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Server responded with ' + response.status);
+        }
+        return response.json();
+    });
 }
 </script>

@@ -1,0 +1,11 @@
+<!-- app/views/rvps/all_files.html.erb -->
+
+<h1>All RVP Files</h1>
+<%# Assuming @pdfs is defined in your all_files action and contains all the PDF records %>
+<ul>
+  <% @pdfs.each do |pdf| %>
+    <li>
+      <%= link_to 'View File', rails_blob_path(pdf.file, disposition: 'attachment') %>
+    </li>
+  <% end %>
+</ul>
