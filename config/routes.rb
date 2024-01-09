@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :rvps
   devise_for :users
   root "pages#index"
 

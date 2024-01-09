@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Rvps</h1>
+
+<div id="rvps">
+  <% @rvps.each do |rvp| %>
+    <%= render rvp %>
+    <p>
+      <%= link_to "Show this rvp", rvp %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New rvp", new_rvp_path %>

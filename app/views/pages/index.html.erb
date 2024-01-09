@@ -19,13 +19,13 @@
       </div>
     </div>
     <div class="col">
-      <div class="form-group">
+     <div class="form-group">
         <label for="rvp">Who is your RVP?</label>
         <select class="form-control" id="rvp" name="rvp">
-      <option value="rvp1">RVP 1</option>
-      <option value="rvp2">RVP 2</option>
-      <!-- Add more RVP options as needed -->
-    </select>
+          <% fetch_all_rvps.each do |rvp| %>
+            <option value="<%= rvp.id %>"><%= rvp.first_name %> <%= rvp.last_name %> - <%= rvp.solution_number %></option>
+          <% end %>
+        </select>
       </div>
     </div>
     <div class="col">
