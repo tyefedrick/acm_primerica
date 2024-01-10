@@ -3,7 +3,7 @@
   <% @rvps.each_with_index do |rvp, index| %>
     <h2 onclick="toggleVisibility('files_<%= index %>', this)">
       <span class="arrow">&#9654;</span> <!-- Right arrow -->
-      <%= "#{rvp.first_name} #{rvp.last_name}" %>
+      <%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %>
     </h2>
     <div id="files_<%= index %>" style="display: none;">
       <ul>
