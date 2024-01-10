@@ -4,6 +4,8 @@ class RvpsController < ApplicationController
   # GET /rvps or /rvps.json
   def index
     @rvps = Rvp.all
+    @rvps = @rvps.sort_by { |rvp| rvp.first_name }
+
   end
 
   # GET /rvps/1 or /rvps/1.json

@@ -1,3 +1,4 @@
+<% @rvps = @rvps.sort_by { |rvp| rvp.first_name } %>
 <%= form_tag(download_selected_pdfs_path, method: :post, data: { turbo: false }) do %>
   <% @rvps.each_with_index do |rvp, index| %>
     <h2 onclick="toggleVisibility('files_<%= index %>', this)">
