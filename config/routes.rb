@@ -13,4 +13,9 @@ Rails.application.routes.draw do
   get 'rvps/files', to: 'rvps#all_files', as: :all_rvp_files
   resources :rvps
 
+
+  post '/download_selected_pdfs', to: 'pdfs#download_selected_pdfs'
+
+  get 'download_zip', to: 'pdfs#download_zip'
+
 end

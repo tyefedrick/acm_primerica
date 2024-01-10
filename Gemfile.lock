@@ -242,6 +242,7 @@ DEPENDENCIES
   letter_opener
   puma (~> 5.0)
   rails (~> 7.0.8)
+  rubyzip
   selenium-webdriver
   sprockets-rails
   sqlite3 (~> 1.4)
