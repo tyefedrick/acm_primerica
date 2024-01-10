@@ -1,10 +1,15 @@
 <% @rvps = @rvps.sort_by { |rvp| rvp.first_name } %>
 <%= form_tag(download_selected_pdfs_path, method: :post, data: { turbo: false }) do %>
+  <div id="favorites-section">
+    <h3>Favorites</h3>
+    <ul id="favorites-list"></ul>
+  </div>
   <% @rvps.each_with_index do |rvp, index| %>
-    <h2 onclick="toggleVisibility('files_<%= index %>', this)">
-      <span class="arrow">&#9654;</span> <!-- Right arrow -->
-      <%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %>
-    </h2>
+  <h2 onclick="toggleVisibility('files_<%= index %>')">
+    <span class="arrow">&#9654;</span> <!-- Right arrow -->
+    <%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %>
+    <span class="favorite" onclick="toggleFavorite('<%= rvp.id %>', this, event)">☆</span>
+  </h2>
     <div id="files_<%= index %>" style="display: none;">
       <ul>
         <% rvp.pdfs.each do |pdf| %>
@@ -21,23 +26,53 @@
 <% end %>
 
 <script>
-  function toggleVisibility(id, headerElement) {
-    var element = document.getElementById(id);
-    var arrow = headerElement.querySelector('.arrow');
-    if (element.style.display === "none") {
-      element.style.display = "block";
-      arrow.innerHTML = '&#9660;'; // Down arrow
-    } else {
-      element.style.display = "none";
-      arrow.innerHTML = '&#9654;'; // Right arrow
+ function toggleVisibility(id) {
+  var element = document.getElementById(id);
+  var arrow = element.previousElementSibling.querySelector('.arrow');
+  if (element.style.display === "none") {
+    element.style.display = "block";
+    arrow.innerHTML = '&#9660;'; // Down arrow
+  } else {
+    element.style.display = "none";
+    arrow.innerHTML = '&#9654;'; // Right arrow
+  }
+}
+
+function toggleFavorite(rvpId, starElement, event) {
+  event.stopPropagation();
+  starElement.classList.toggle('favorited');
+  const favorited = starElement.classList.contains('favorited');
+  starElement.innerHTML = favorited ? '★' : '☆';
+
+  const favoritesList = document.getElementById('favorites-list');
+  if (favorited) {
+    const listItem = document.createElement('li');
+    listItem.id = `favorite-${rvpId}`;
+    listItem.textContent = `Favorite RVP ID: ${rvpId}`;
+    favoritesList.appendChild(listItem);
+  } else {
+    const listItemToRemove = document.getElementById(`favorite-${rvpId}`);
+    if (listItemToRemove) {
+      favoritesList.removeChild(listItemToRemove);
     }
   }
+}
 </script>
 
 <style>
-  .arrow {
-    display: inline-block;
-    margin-right: 5px;
-    transition: transform 0.3s ease;
-  }
+ .arrow {
+  display: inline-block;
+  margin-right: 5px;
+  transition: transform 0.3s ease;
+}
+
+.favorite {
+  cursor: pointer;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.favorite.favorited {
+  color: gold;
+}
 </style>
