@@ -5,11 +5,11 @@
     <ul id="favorites-list"></ul>
   </div>
   <% @rvps.each_with_index do |rvp, index| %>
-  <h2 onclick="toggleVisibility('files_<%= index %>')">
-    <span class="arrow">&#9654;</span> <!-- Right arrow -->
-    <%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %>
-    <span class="favorite" onclick="toggleFavorite('<%= rvp.id %>', this, event)">☆</span>
-  </h2>
+    <h2 onclick="toggleVisibility('files_<%= index %>')">
+      <span class="arrow">&#9654;</span> <!-- Right arrow -->
+      <%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %>
+      <span class="favorite" id="star-main-<%= rvp.id %>" onclick="toggleFavorite('<%= rvp.id %>', this, event)">☆</span>
+    </h2>
     <div id="files_<%= index %>" style="display: none;">
       <ul>
         <% rvp.pdfs.each do |pdf| %>
@@ -25,9 +25,13 @@
   <%= submit_tag "Download Selection" %>
 <% end %>
 
+
+Copy code
 <script>
- function toggleVisibility(id) {
+function toggleVisibility(id) {
   var element = document.getElementById(id);
+  if (!element) return;
+
   var arrow = element.previousElementSibling.querySelector('.arrow');
   if (element.style.display === "none") {
     element.style.display = "block";
@@ -40,21 +44,57 @@
 
 function toggleFavorite(rvpId, starElement, event) {
   event.stopPropagation();
-  starElement.classList.toggle('favorited');
-  const favorited = starElement.classList.contains('favorited');
-  starElement.innerHTML = favorited ? '★' : '☆';
-
+  const isFavorited = starElement.classList.contains('favorited');
   const favoritesList = document.getElementById('favorites-list');
-  if (favorited) {
-    const listItem = document.createElement('li');
-    listItem.id = `favorite-${rvpId}`;
-    listItem.textContent = `Favorite RVP ID: ${rvpId}`;
-    favoritesList.appendChild(listItem);
-  } else {
-    const listItemToRemove = document.getElementById(`favorite-${rvpId}`);
-    if (listItemToRemove) {
-      favoritesList.removeChild(listItemToRemove);
+
+  if (isFavorited) {
+    // Remove from favorites
+    starElement.classList.remove('favorited');
+    starElement.innerHTML = '☆';
+    const favoriteItem = document.getElementById(`favorite-item-${rvpId}`);
+    if (favoriteItem) {
+      favoritesList.removeChild(favoriteItem);
     }
+    // Update the star in the main list
+    updateMainListStar(rvpId, false);
+  } else {
+    // Add to favorites
+    starElement.classList.add('favorited');
+    starElement.innerHTML = '★';
+    addToFavorites(rvpId, starElement);
+    // Update the star in the main list
+    updateMainListStar(rvpId, true);
+  }
+}
+
+function addToFavorites(rvpId, starElement) {
+  const rvpElement = starElement.closest('h2').cloneNode(true);
+  const dropdownElement = starElement.closest('h2').nextElementSibling.cloneNode(true);
+
+  rvpElement.querySelector('.favorite').onclick = function(event) {
+    toggleFavorite(rvpId, this, event);
+  };
+
+  // Update cloned dropdown's ID and onclick for the arrow
+  const clonedArrow = rvpElement.querySelector('.arrow');
+  clonedArrow.onclick = function() {
+    toggleVisibility(`favorite-files-${rvpId}`);
+  };
+  dropdownElement.id = `favorite-files-${rvpId}`;
+
+  const listItem = document.createElement('li');
+  listItem.id = `favorite-item-${rvpId}`;
+  listItem.appendChild(rvpElement);
+  listItem.appendChild(dropdownElement);
+
+  document.getElementById('favorites-list').appendChild(listItem);
+}
+
+function updateMainListStar(rvpId, isFavorited) {
+  const mainListStar = document.getElementById(`star-main-${rvpId}`);
+  if (mainListStar) {
+    mainListStar.classList.toggle('favorited', isFavorited);
+    mainListStar.innerHTML = isFavorited ? '★' : '☆';
   }
 }
 </script>
