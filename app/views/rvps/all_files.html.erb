@@ -1,15 +1,42 @@
 <%= form_tag(download_selected_pdfs_path, method: :post, data: { turbo: false }) do %>
-  <% @rvps.each do |rvp| %>
-    <h2><%= "#{rvp.first_name} #{rvp.last_name}" %></h2>
-    <ul>
-      <% rvp.pdfs.each do |pdf| %>
-        <li>
-          <% full_name = pdf.full_name %> <!-- Get the full name from the PDF model -->
-          <%= check_box_tag "selected_files[]", pdf.id %>
-          <%= "#{full_name} AMC Form #{pdf.formatted_date}.pdf" %>
-        </li>
-      <% end %>
-    </ul>
+  <% @rvps.each_with_index do |rvp, index| %>
+    <h2 onclick="toggleVisibility('files_<%= index %>', this)">
+      <span class="arrow">&#9654;</span> <!-- Right arrow -->
+      <%= "#{rvp.first_name} #{rvp.last_name}" %>
+    </h2>
+    <div id="files_<%= index %>" style="display: none;">
+      <ul>
+        <% rvp.pdfs.each do |pdf| %>
+          <li>
+            <% full_name = pdf.full_name %> <!-- Get the full name from the PDF model -->
+            <%= check_box_tag "selected_files[]", pdf.id %>
+            <%= "#{full_name} AMC Form #{pdf.formatted_date}.pdf" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
   <%= submit_tag "Download Selection" %>
 <% end %>
+
+<script>
+  function toggleVisibility(id, headerElement) {
+    var element = document.getElementById(id);
+    var arrow = headerElement.querySelector('.arrow');
+    if (element.style.display === "none") {
+      element.style.display = "block";
+      arrow.innerHTML = '&#9660;'; // Down arrow
+    } else {
+      element.style.display = "none";
+      arrow.innerHTML = '&#9654;'; // Right arrow
+    }
+  }
+</script>
+
+<style>
+  .arrow {
+    display: inline-block;
+    margin-right: 5px;
+    transition: transform 0.3s ease;
+  }
+</style>
