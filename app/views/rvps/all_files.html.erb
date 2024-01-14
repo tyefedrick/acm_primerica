@@ -1,4 +1,3 @@
-<%= javascript_include_tag 'all_files.js' %>
 
 <% @rvps = @rvps.sort_by { |rvp| rvp.first_name } %>
 <%= form_tag(download_selected_pdfs_path, method: :post, data: { turbo: false }) do %>
@@ -8,9 +7,9 @@
   </div>
   <% @rvps.each_with_index do |rvp, index| %>
     <h2 onclick="toggleVisibility('files_<%= index %>')">
-      <span class="arrow">&#9654;</span> <!-- Right arrow -->
-      <%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %>
-      <span class="favorite" id="star-main-<%= rvp.id %>" onclick="toggleFavorite('<%= rvp.id %>', this, event)">☆</span>
+        <span class="arrow">&#9654;</span> <!-- Right arrow -->
+        <%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %>
+        <span class="favorite <%= rvp.favorite_by_user?(current_user) ? 'favorited' : '' %>" id="star-main-<%= rvp.id %>" onclick="toggleFavorite('<%= rvp.id %>', this, event)">☆</span>
     </h2>
     <div id="files_<%= index %>" style="display: none;">
       <ul>
@@ -28,7 +27,7 @@
 <% end %>
 
 <style>
- .arrow {
+.arrow {
   display: inline-block;
   margin-right: 5px;
   transition: transform 0.3s ease;
@@ -44,3 +43,4 @@
   color: gold;
 }
 </style>
+

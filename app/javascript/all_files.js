@@ -1,69 +1,82 @@
+// Removing the import statements as they may cause issues if your environment does not support ES6 modules
+// import $ from 'jquery';
+// window.$ = $;
+// window.jQuery = $;
+
+// Function to toggle the visibility of dropdown content
 function toggleVisibility(id) {
     var element = document.getElementById(id);
     if (!element) return;
-  
+
     var arrow = element.previousElementSibling.querySelector('.arrow');
     if (element.style.display === "none") {
-      element.style.display = "block";
-      arrow.innerHTML = '&#9660;'; // Down arrow
+        element.style.display = "block";
+        arrow.innerHTML = '&#9660;'; // Down arrow
     } else {
-      element.style.display = "none";
-      arrow.innerHTML = '&#9654;'; // Right arrow
+        element.style.display = "none";
+        arrow.innerHTML = '&#9654;'; // Right arrow
     }
-  }
-  
-  function toggleFavorite(rvpId, starElement, event) {
+}
+
+// Function to handle favorite button click
+function toggleFavorite(rvpId, starElement, event) {
     event.stopPropagation();
     const isFavorited = starElement.classList.contains('favorited');
-    const favoritesList = document.getElementById('favorites-list');
-  
-    if (isFavorited) {
-      // Remove from favorites
-      starElement.classList.remove('favorited');
-      starElement.innerHTML = '☆';
-      const favoriteItem = document.getElementById(`favorite-item-${rvpId}`);
-      if (favoriteItem) {
-        favoritesList.removeChild(favoriteItem);
-      }
-      // Update the star in the main list
-      updateMainListStar(rvpId, false);
-    } else {
-      // Add to favorites
-      starElement.classList.add('favorited');
-      starElement.innerHTML = '★';
-      addToFavorites(rvpId, starElement);
-      // Update the star in the main list
-      updateMainListStar(rvpId, true);
-    }
-  }
-  
-  function addToFavorites(rvpId, starElement) {
-    const rvpElement = starElement.closest('h2').cloneNode(true);
-    const dropdownElement = starElement.closest('h2').nextElementSibling.cloneNode(true);
-  
-    rvpElement.querySelector('.favorite').onclick = function(event) {
-      toggleFavorite(rvpId, this, event);
-    };
-  
-    // Update cloned dropdown's ID and onclick for the arrow
-    const clonedArrow = rvpElement.querySelector('.arrow');
-    clonedArrow.onclick = function() {
-      toggleVisibility(`favorite-files-${rvpId}`);
-    };
-    dropdownElement.id = `favorite-files-${rvpId}`;
-  
-    const listItem = document.createElement('li');
-    listItem.id = `favorite-item-${rvpId}`;
-    listItem.appendChild(rvpElement);
-    listItem.appendChild(dropdownElement);
-  
-    document.getElementById('favorites-list').appendChild(listItem);
-  }
-  
-  function updateMainListStar(rvpId, isFavorited) {
+
+    // Update the favorite status in the database
+    updateFavoriteStatus(rvpId, !isFavorited, function(response) {
+        if (response.status === 'success') {
+            if (response.favorite_id === null) {
+                console.log("Favorite removed successfully:", response.message);
+            } else {
+                console.log("Favorite saved successfully with ID:", response.favorite_id);
+            }
+
+            // Update the star icon based on the response
+            starElement.classList.toggle('favorited', !isFavorited);
+            starElement.innerHTML = isFavorited ? '☆' : '★';
+        } else {
+            console.error("Error updating favorite status:", response.message);
+        }
+    });
+}
+
+// Function to update the main list star appearance based on favorite status
+function updateMainListStar(rvpId, isFavorited) {
     const mainListStar = document.getElementById(`star-main-${rvpId}`);
     if (mainListStar) {
-      mainListStar.classList.toggle('favorited', isFavorited);
-      mainListStar.innerHTML = isFavorited ? '★' : '☆';
+        mainListStar.classList.toggle('favorited', isFavorited);
+        mainListStar.innerHTML = isFavorited ? '★' : '☆';
     }
-  }
+}
+
+// Function to update favorite status in the database using Fetch API
+function updateFavoriteStatus(rvpId, isFavorite, callback) {
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    fetch('/favorites/update', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': token,
+        },
+        body: JSON.stringify({ rvp_id: rvpId, favorite: isFavorite }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        callback(data);
+    })
+    .catch(error => {
+        console.error("Error updating favorite status:", error);
+    });
+}
+
+// Additional function to add favorites (if needed)
+function addToFavorites(rvpId, starElement) {
+    // Implementation for adding to favorites
+}

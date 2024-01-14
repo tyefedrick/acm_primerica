@@ -18,4 +18,7 @@ Rails.application.routes.draw do
 
   get 'download_zip', to: 'pdfs#download_zip'
 
+  post 'favorites/update', to: 'favorites#update'
+
+
 end

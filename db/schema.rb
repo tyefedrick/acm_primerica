@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_09_194411) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_14_012647) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,6 +39,24 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_09_194411) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "downloads", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "pdf_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pdf_id"], name: "index_downloads_on_pdf_id"
+    t.index ["user_id"], name: "index_downloads_on_user_id"
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "rvp_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rvp_id"], name: "index_favorites_on_rvp_id"
+    t.index ["user_id"], name: "index_favorites_on_user_id"
+  end
+
   create_table "pdf_forms", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -50,6 +68,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_09_194411) do
     t.integer "rvp_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "downloaded"
     t.index ["rvp_id"], name: "index_pdfs_on_rvp_id"
   end
 
@@ -94,6 +113,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_09_194411) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "downloads", "pdfs"
+  add_foreign_key "downloads", "users"
+  add_foreign_key "favorites", "rvps"
+  add_foreign_key "favorites", "users"
   add_foreign_key "pdfs", "rvps"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
