@@ -5,7 +5,7 @@ class RvpsController < ApplicationController
   def index
     @rvps = Rvp.all
     @rvps = @rvps.sort_by { |rvp| rvp.first_name }
-
+    puts @rvps.inspect  # Debugging line to print @rvps to console
   end
 
   # GET /rvps/1 or /rvps/1.json

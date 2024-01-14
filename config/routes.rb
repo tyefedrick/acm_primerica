@@ -26,5 +26,6 @@ Rails.application.routes.draw do
 
   get '/rvps', to: 'rvps#index', as: :rvps
 
+  resources :rvps
 
 end
