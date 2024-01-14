@@ -9,16 +9,17 @@ Rails.application.routes.draw do
   end
 
   post '/save-pdf', to: 'pdfs#save'
-
   get 'rvps/files', to: 'rvps#all_files', as: :all_rvp_files
-  resources :rvps
 
 
-  post '/download_selected_pdfs', to: 'pdfs#download_selected_pdfs'
+  post '/download_selected_pdfs', to: 'pdfs#download_selected_pdfs', as: :download_selected_pdfs
 
-  get 'download_zip', to: 'pdfs#download_zip'
+  get '/download_zip', to: 'pdfs#download_zip', as: :download_zip
 
   post 'favorites/update', to: 'favorites#update'
 
+  get '/some_other_path', to: 'some_controller#some_action', as: :some_other_path
+
+  get '/file_not_found', to: 'pdfs#file_not_found', as: :file_not_found
 
 end

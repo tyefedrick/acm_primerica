@@ -8,4 +8,7 @@ class User < ApplicationRecord
   has_many :rvps, through: :favorites
   
   devise :database_authenticatable, :registerable, :confirmable, :recoverable, :rememberable, :validatable
+
+  has_many :downloaded_pdfs
+  has_many :pdfs, through: :downloaded_pdfs
 end

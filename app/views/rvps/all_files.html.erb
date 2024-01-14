@@ -1,61 +1,77 @@
-
 <% @rvps = @rvps.sort_by { |rvp| rvp.first_name } %>
 <%= form_tag(download_selected_pdfs_path, method: :post, data: { turbo: false }) do %>
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
   <div id="favorites-section">
     <h3>Favorites</h3>
     <ul id="favorites-list"></ul>
   </div>
-
   <label for="year-filter">Select Year:</label>
-<select id="year-filter" name="year">
-  <option value="<%= @selected_year %>"><%= @selected_year %> (Current Year)</option>
-  <option value="">All Years</option>
-  <% @years.each do |year| %>
-    <option value="<%= year %>"><%= year %></option>
-  <% end %>
-</select>
-
-<div id="favorites-section">
-  <h3>Favorites</h3>
-  <ul id="favorites-list"></ul>
-</div>
-
+  <select id="year-filter" name="year">
+    <option value="<%= @selected_year %>"><%= @selected_year %> (Current Year)</option>
+    <option value="">All Years</option>
+    <% @years.each do |year| %>
+      <option value="<%= year %>"><%= year %></option>
+    <% end %>
+  </select>
   <% @rvps.each_with_index do |rvp, index| %>
     <h2 onclick="toggleVisibility('files_<%= index %>')">
-        <span class="arrow">&#9654;</span> <!-- Right arrow -->
-        <%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %>
-        <span class="favorite <%= rvp.favorite_by_user?(current_user) ? 'favorited' : '' %>" id="star-main-<%= rvp.id %>" onclick="toggleFavorite('<%= rvp.id %>', this, event)">☆</span>
+      <span class="arrow">&#9654;</span> <!-- Right arrow -->
+      <%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %>
+      <span class="favorite <%= rvp.favorite_by_user?(current_user) ? 'favorited' : '' %>" id="star-main-<%= rvp.id %>" onclick="toggleFavorite('<%= rvp.id %>', this, event)">☆</span>
     </h2>
     <div id="files_<%= index %>" style="display: none;">
       <ul>
-        <% rvp.pdfs.each do |pdf| %>
-          <li>
-            <% full_name = pdf.full_name %> <!-- Get the full name from the PDF model -->
-            <%= check_box_tag "selected_files[]", pdf.id %>
-            <%= "#{full_name} AMC Form #{pdf.formatted_date}.pdf" %>
-          </li>
-        <% end %>
+        <!-- Not Downloaded Section -->
+        <li>
+          <h3>Not Downloaded</h3>
+          <ul id="not-downloaded-list">
+            <% rvp.pdfs.each do |pdf| %>
+              <% unless pdf.downloaded_by?(current_user) %>
+                <!-- Display the form information -->
+                <% full_name = pdf.full_name %> <!-- Get the full name from the PDF model -->
+                <li>
+                  <%= check_box_tag "selected_files[]", pdf.id %>
+                  <%= "#{full_name} AMC Form #{pdf.formatted_date}.pdf" %>
+                  <!-- Add a link to download the form -->
+                  <a href="/pdfs/download/<%= pdf.id %>" class="download-link" data-pdf-id="<%= pdf.id %>">Download</a>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </li>
+      <!-- Downloaded Section -->
+        <li>
+          <h3>Downloaded</h3>
+          <ul id="downloaded-list">
+            <% rvp.pdfs.each do |pdf| %>
+              <!-- Display the form information -->
+              <% full_name = pdf.full_name %> <!-- Get the full name from the PDF model -->
+              <li>
+                <%= check_box_tag "selected_files[]", pdf.id %> <!-- Remove the { checked: true } option -->
+                <%= "#{full_name} AMC Form #{pdf.formatted_date}.pdf" %>
+                <!-- Add a link to download the form -->
+                <a href="/pdfs/download/<%= pdf.id %>" class="download-link" data-pdf-id="<%= pdf.id %>">Download</a>
+              </li>
+            <% end %>
+          </ul>
+        </li>
       </ul>
     </div>
   <% end %>
   <%= submit_tag "Download Selection" %>
 <% end %>
-
 <style>
-.arrow {
-  display: inline-block;
-  margin-right: 5px;
-  transition: transform 0.3s ease;
-}
-
-.favorite {
-  cursor: pointer;
-  display: inline-block;
-  margin-left: 10px;
-}
-
-.favorite.favorited {
-  color: gold;
-}
+  .arrow {
+    display: inline-block;
+    margin-right: 5px;
+    transition: transform 0.3s ease;
+  }
+  .favorite {
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 10px;
+  }
+  .favorite.favorited {
+    color: gold;
+  }
 </style>
-

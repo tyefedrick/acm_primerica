@@ -8,6 +8,6 @@ class Rvp < ApplicationRecord
       has_many :users, through: :favorites
 
       def favorite_by_user?(user)
-        favorites.exists?(user_id: user.id)
+        user.favorites.exists?(rvp: self)
       end
 end
