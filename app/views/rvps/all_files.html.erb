@@ -5,6 +5,21 @@
     <h3>Favorites</h3>
     <ul id="favorites-list"></ul>
   </div>
+
+  <label for="year-filter">Select Year:</label>
+<select id="year-filter" name="year">
+  <option value="<%= @selected_year %>"><%= @selected_year %> (Current Year)</option>
+  <option value="">All Years</option>
+  <% @years.each do |year| %>
+    <option value="<%= year %>"><%= year %></option>
+  <% end %>
+</select>
+
+<div id="favorites-section">
+  <h3>Favorites</h3>
+  <ul id="favorites-list"></ul>
+</div>
+
   <% @rvps.each_with_index do |rvp, index| %>
     <h2 onclick="toggleVisibility('files_<%= index %>')">
         <span class="arrow">&#9654;</span> <!-- Right arrow -->

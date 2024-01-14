@@ -65,8 +65,14 @@ class RvpsController < ApplicationController
   end
 
   def all_files
-    @pdfs = Pdf.all  # Or however you're fetching the PDF files
+    @pdfs = Pdf.all
     @rvps = Rvp.all
+  
+    # Query distinct years based on the formatted_date attribute
+    @years = @pdfs.reject { |pdf| pdf.formatted_date.nil? }
+                   .map { |pdf| pdf.formatted_date.year }
+                   .uniq
+                   .sort
   end
 
   private

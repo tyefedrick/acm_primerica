@@ -3,12 +3,11 @@ class Pdf < ApplicationRecord
   has_one_attached :file
   attr_accessor :full_name
 
-
   def full_name
     # Extract the full name from the PDF file name
     # You may need to adjust this based on how your file names are structured
     file_name = self.file.filename.to_s
-    match = file_name.match(/^(.*?) AMC Form \d{4}-\d{2}-\d{2}\.pdf$/)
+    match = file_name.match(/^(.*?) AMC Form \d{4}-\d{2}-\d{2}\.pdf/)
     
     if match
       Rails.logger.info("File Name: #{file_name}")
@@ -25,13 +24,13 @@ class Pdf < ApplicationRecord
     # Extract the formatted date from the PDF file name
     # You may need to adjust this based on how your file names are structured
     file_name = self.file.filename.to_s
-    match = file_name.match(/(\d{4}-\d{2}-\d{2})\.pdf$/)
-    
+    match = file_name.match(/(\d{4}-\d{2}-\d{2})\.pdf/)
+  
     if match
-      return Date.parse(match[1]).strftime("%b %d, %Y")
+      return Date.parse(match[1])
     else
-      # If no match is found, return a default value or handle it as needed
-      return "Date Not Found"
+      # If no match is found, return nil or handle it as needed
+      return nil
     end
   end
 end

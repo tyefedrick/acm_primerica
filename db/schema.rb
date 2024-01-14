@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_14_012647) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_14_043358) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -69,6 +69,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_14_012647) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "downloaded"
+    t.date "formatted_date"
     t.index ["rvp_id"], name: "index_pdfs_on_rvp_id"
   end
 

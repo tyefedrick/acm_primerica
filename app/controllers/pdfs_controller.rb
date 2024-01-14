@@ -4,8 +4,17 @@ class PdfsController < ApplicationController
     # Action to display existing PDF files
     def all_files
       @pdfs = Pdf.all
+      @rvps = Rvp.all
+    
+      if params[:year].present?
+        @selected_year = params[:year].to_i
+        @pdfs = @pdfs.select { |pdf| pdf.formatted_date.year == @selected_year }
+      else
+        @selected_year = Date.current.year
+      end
+    
+      @years = @pdfs.map { |pdf| pdf.formatted_date.year }.uniq.sort
     end
-  
     # Action to create new PDFs
     def save
       rvp = Rvp.find(params[:rvp_id])
@@ -92,4 +101,5 @@ class PdfsController < ApplicationController
       ensure
         session[:download_zip_path] = nil  # Clear the session
       end
-  end
+
+    end
