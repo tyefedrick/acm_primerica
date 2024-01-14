@@ -33,7 +33,7 @@
                   <%= check_box_tag "selected_files[]", pdf.id %>
                   <%= "#{full_name} AMC Form #{pdf.formatted_date}.pdf" %>
                   <!-- Add a link to download the form -->
-                  <a href="/pdfs/download/<%= pdf.id %>" class="download-link" data-pdf-id="<%= pdf.id %>">Download</a>
+                 <a href="<%= download_pdf_path(pdf.id) %>" class="download-link" data-pdf-id="<%= pdf.id %>" download>Download</a>
                 </li>
               <% end %>
             <% end %>
@@ -50,7 +50,7 @@
                 <%= check_box_tag "selected_files[]", pdf.id %> <!-- Remove the { checked: true } option -->
                 <%= "#{full_name} AMC Form #{pdf.formatted_date}.pdf" %>
                 <!-- Add a link to download the form -->
-                <a href="/pdfs/download/<%= pdf.id %>" class="download-link" data-pdf-id="<%= pdf.id %>">Download</a>
+               <a href="<%= download_pdf_path(pdf.id) %>" class="download-link" data-pdf-id="<%= pdf.id %>" download>Download</a>
               </li>
             <% end %>
           </ul>

@@ -22,4 +22,9 @@ Rails.application.routes.draw do
 
   get '/file_not_found', to: 'pdfs#file_not_found', as: :file_not_found
 
+  get '/pdfs/download/:id', to: 'pdfs#download', as: 'download_pdf'
+
+  get '/rvps', to: 'rvps#index', as: :rvps
+
+
 end

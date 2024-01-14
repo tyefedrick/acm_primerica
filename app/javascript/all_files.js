@@ -103,3 +103,20 @@ $('.download-link').on('click', function(event) {
     const pdfId = $(this).data('pdf-id');
     downloadPdf(pdfId, this);
 });
+
+// Function to handle download PDF button click using jQuery
+function downloadPdf(pdfId, buttonElement) {
+    $.get('/pdfs/download/' + pdfId, function(data) {
+        // Handle success (you can display a success message if needed)
+        console.log('PDF downloaded successfully');
+
+        // If it was in the "Not Downloaded" section, move it to the "Downloaded" section
+        const listItem = $(buttonElement).closest('li');
+        if (listItem.closest('#not-downloaded-list').length > 0) {
+            listItem.appendTo('#downloaded-list');
+        }
+    }).fail(function() {
+        // Handle failure (you can display an error message if needed)
+        console.error('PDF download failed');
+    });
+}
