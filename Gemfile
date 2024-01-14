@@ -45,7 +45,6 @@ gem "bootsnap", require: false
 gem 'devise'
 gem 'cancancan'
 gem 'letter_opener', group: :development
-
 gem 'rubyzip', require: 'zip'
 
 
