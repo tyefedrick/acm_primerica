@@ -56,7 +56,7 @@ function updateFavoriteStatus(rvpId, isFavorite, callback) {
 
     fetch('/favorites/update', {
         method: 'POST',
-        headers: 
+        headers: {
             'Content-Type': 'application/json',
             'X-CSRF-Token': token,
         },
