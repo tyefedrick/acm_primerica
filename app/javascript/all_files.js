@@ -82,7 +82,6 @@ function addToFavorites(rvpId, starElement) {
 }
 
 // Function to handle download PDF button click
-// Function to handle download PDF button click
 function downloadPdf(pdfId, buttonElement) {
     // Check if the download button has already been clicked
     if (buttonElement.classList.contains('downloaded')) {
@@ -125,6 +124,9 @@ function downloadPdf(pdfId, buttonElement) {
 
             // Handle any further actions after successful download
             console.log('PDF downloaded successfully');
+
+            // Refresh the page after successful download
+            location.reload();
         } else {
             // Handle download failure
             console.error('PDF download failed');
@@ -133,6 +135,7 @@ function downloadPdf(pdfId, buttonElement) {
 
     xhr.send();
 }
+
 // Event listener for download links
 $(document).on('click', '.download-link', function (event) {
     event.preventDefault(); // Prevent the default link behavior
