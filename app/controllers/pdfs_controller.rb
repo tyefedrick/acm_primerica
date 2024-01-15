@@ -118,15 +118,18 @@ class PdfsController < ApplicationController
     end
 
   # New action to handle individual PDF downloads
-def download
-  pdf = Pdf.find(params[:id])
-
-  # Check if the PDF exists and is associated with the current user
-  if pdf && current_user.downloaded_pdfs.exists?(pdf: pdf)
-    # Send the PDF file for download
-    send_data pdf.file.download, filename: pdf.file.filename.to_s, type: 'application/pdf'
-  else
-    redirect_to file_not_found_path
+  def download
+    pdf = Pdf.find(params[:id])
+  
+    # Check if the PDF exists
+    if pdf
+      # Create a DownloadedPdf record to mark it as downloaded
+      current_user.downloaded_pdfs.create(pdf: pdf)
+  
+      # Send the PDF file for download
+      send_data pdf.file.download, filename: pdf.file.filename.to_s, type: 'application/pdf'
+    else
+      redirect_to file_not_found_path
+    end
   end
-end
   end
