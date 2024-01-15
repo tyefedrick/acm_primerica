@@ -82,41 +82,74 @@ function addToFavorites(rvpId, starElement) {
 }
 
 // Function to handle download PDF button click
+// Function to handle download PDF button click
 function downloadPdf(pdfId, buttonElement) {
-    $.get('/pdfs/download/' + pdfId, function(data) {
-        // Handle success (you can display a success message if needed)
-        console.log('PDF downloaded successfully');
+    // Check if the download button has already been clicked
+    if (buttonElement.classList.contains('downloaded')) {
+        console.log('PDF download already initiated.');
+        return;
+    }
 
-        // If it was in the "Not Downloaded" section, move it to the "Downloaded" section
-        const listItem = $(buttonElement).closest('li');
-        if (listItem.closest('#not-downloaded-section').length > 0) {
-            listItem.appendTo('#downloaded-list');
+    // Mark the download button as clicked to prevent multiple downloads
+    buttonElement.classList.add('downloaded');
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', '/pdfs/download/' + pdfId, true);
+    xhr.responseType = 'blob';
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            const blob = xhr.response;
+
+            // Extract the filename from the response headers
+            const contentDisposition = xhr.getResponseHeader('Content-Disposition');
+            const match = contentDisposition && contentDisposition.match(/filename="(.+)"/);
+            const filename = match ? match[1] : 'downloaded.pdf';
+
+            // Create a temporary URL for the blob
+            const url = window.URL.createObjectURL(blob);
+
+            // Create a hidden anchor element to trigger the download
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = filename; // Set the filename here
+            document.body.appendChild(a);
+
+            // Trigger a click event on the anchor element to initiate the download
+            a.click();
+
+            // Clean up resources
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+
+            // Handle any further actions after successful download
+            console.log('PDF downloaded successfully');
+        } else {
+            // Handle download failure
+            console.error('PDF download failed');
         }
-    }).fail(function() {
-        // Handle failure (you can display an error message if needed)
-        console.error('PDF download failed');
-    });
+    };
+
+    xhr.send();
 }
 // Event listener for download links
-$('.download-link').on('click', function(event) {
+$(document).on('click', '.download-link', function (event) {
     event.preventDefault(); // Prevent the default link behavior
     const pdfId = $(this).data('pdf-id');
     downloadPdf(pdfId, this);
 });
 
-// Function to handle download PDF button click using jQuery
-function downloadPdf(pdfId, buttonElement) {
-    $.get('/pdfs/download/' + pdfId, function(data) {
-        // Handle success (you can display a success message if needed)
-        console.log('PDF downloaded successfully');
+// Set a flag in sessionStorage when leaving the page
+window.addEventListener('beforeunload', function () {
+    sessionStorage.setItem('refreshRvpPage', 'true');
+});
 
-        // If it was in the "Not Downloaded" section, move it to the "Downloaded" section
-        const listItem = $(buttonElement).closest('li');
-        if (listItem.closest('#not-downloaded-list').length > 0) {
-            listItem.appendTo('#downloaded-list');
-        }
-    }).fail(function() {
-        // Handle failure (you can display an error message if needed)
-        console.error('PDF download failed');
-    });
-}
+// Check if the flag exists and reload the page if needed
+document.addEventListener('DOMContentLoaded', function () {
+    const shouldRefresh = sessionStorage.getItem('refreshRvpPage');
+    if (shouldRefresh === 'true') {
+        sessionStorage.removeItem('refreshRvpPage'); // Remove the flag
+        location.reload(); // Reload the page
+    }
+});
