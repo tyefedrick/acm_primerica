@@ -142,17 +142,3 @@ $(document).on('click', '.download-link', function (event) {
     const pdfId = $(this).data('pdf-id');
     downloadPdf(pdfId, this);
 });
-
-// Set a flag in sessionStorage when leaving the page
-window.addEventListener('beforeunload', function () {
-    sessionStorage.setItem('refreshRvpPage', 'true');
-});
-
-// Check if the flag exists and reload the page if needed
-document.addEventListener('DOMContentLoaded', function () {
-    const shouldRefresh = sessionStorage.getItem('refreshRvpPage');
-    if (shouldRefresh === 'true') {
-        sessionStorage.removeItem('refreshRvpPage'); // Remove the flag
-        location.reload(); // Reload the page
-    }
-});
