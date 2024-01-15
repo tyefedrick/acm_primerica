@@ -167,6 +167,7 @@ document.getElementById('download').addEventListener('click', () => {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('portrait', 'mm', 'a4');
     const content = document.getElementById('pdf-content');
+
     if (!content) {
         alert('Content not found');
         return;
@@ -177,7 +178,7 @@ document.getElementById('download').addEventListener('click', () => {
     const selectedRVP = document.getElementById('rvp').value;
 
     if (!repSignature) {
-        alert("Rep's E-Signature is required before downloading.");
+        alert("Rep's E-Signature is required.");
         return;
     }
 
@@ -188,26 +189,18 @@ document.getElementById('download').addEventListener('click', () => {
         const imgHeight = canvas.height * imgWidth / canvas.width;
         const imgData = canvas.toDataURL('image/png');
         doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-        const todayDate = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
-        const filename = `${fullName} AMC Form ${todayDate}.pdf`;
-
         const pdfBlob = doc.output('blob');
 
         // Fetch CSRF token from meta tag
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         // Send the selected RVP, PDF data, full name, and formatted date to your server
-        savePDFToDatabase(selectedRVP, pdfBlob, csrfToken, fullName, todayDate).then(response => {
-            const downloadLink = document.createElement('a');
-            downloadLink.href = URL.createObjectURL(pdfBlob);
-            downloadLink.download = filename;
-            downloadLink.textContent = 'Download PDF';
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
+        savePDFToDatabase(selectedRVP, pdfBlob, csrfToken, fullName).then(response => {
+            alert('PDF successfully saved to database.');
             document.getElementById('download').style.visibility = 'visible';
         }).catch(error => {
             console.error('Error saving PDF:', error);
+            alert('Error occurred while saving the PDF.');
             document.getElementById('download').style.visibility = 'visible';
         });
     }).catch(err => {
@@ -216,12 +209,11 @@ document.getElementById('download').addEventListener('click', () => {
     });
 });
 
-function savePDFToDatabase(rvp, pdfBlob, csrfToken, fullName, formattedDate) {
+function savePDFToDatabase(rvp, pdfBlob, csrfToken, fullName) {
     let formData = new FormData();
     formData.append('pdf', pdfBlob);
     formData.append('rvp_id', rvp);
     formData.append('full_name', fullName);
-    formData.append('formatted_date', formattedDate);
 
     // Include CSRF token in the request headers
     return fetch('/save-pdf', {

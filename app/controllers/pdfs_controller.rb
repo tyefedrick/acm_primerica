@@ -37,7 +37,7 @@ class PdfsController < ApplicationController
 
         if pdf.save
           # Create a DownloadedPdf record to associate the PDF with the logged-in user
-          current_user.downloaded_pdfs.create(pdf: pdf)
+          # current_user.downloaded_pdfs.create(pdf: pdf)
           render json: { message: 'PDF saved successfully' }, status: :created
         else
           render json: pdf.errors, status: :unprocessable_entity
