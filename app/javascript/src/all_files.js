@@ -56,7 +56,7 @@ function updateFavoriteStatus(rvpId, isFavorite, callback) {
 
     fetch('/favorites/update', {
         method: 'POST',
-        headers: {
+        headers: 
             'Content-Type': 'application/json',
             'X-CSRF-Token': token,
         },
@@ -141,18 +141,4 @@ $(document).on('click', '.download-link', function (event) {
     event.preventDefault(); // Prevent the default link behavior
     const pdfId = $(this).data('pdf-id');
     downloadPdf(pdfId, this);
-});
-
-// Set a flag in sessionStorage when leaving the page
-window.addEventListener('beforeunload', function () {
-    sessionStorage.setItem('refreshRvpPage', 'true');
-});
-
-// Check if the flag exists and reload the page if needed
-document.addEventListener('DOMContentLoaded', function () {
-    const shouldRefresh = sessionStorage.getItem('refreshRvpPage');
-    if (shouldRefresh === 'true') {
-        sessionStorage.removeItem('refreshRvpPage'); // Remove the flag
-        location.reload(); // Reload the page
-    }
 });
