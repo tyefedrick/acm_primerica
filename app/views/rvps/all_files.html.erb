@@ -3,7 +3,34 @@
   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
   <div id="favorites-section">
     <h3>Favorites</h3>
-    <ul id="favorites-list"></ul>
+    <ul id="favorites-list">
+        <!-- Iterate over favorites and display them -->
+        <% @favorites.each_with_index do |favorite, index| %>
+            <h2 class="rvp-favorite" data-rvp-id="<%= favorite.rvp.id %>">
+                <span class="arrow">&#9654;</span> <!-- Right arrow -->
+                <%= "#{favorite.rvp.first_name} #{favorite.rvp.last_name} - #{favorite.rvp.solution_number}" %>
+                <span class="favorite <%= favorite.rvp.favorite_by_user?(current_user) ? 'favorited' : '' %> favorite-favorite" data-rvp-id="<%= favorite.rvp.id %>">☆</span>
+            </h2>
+            <div id="files_<%= favorite.rvp.id %>-favorite" style="display: none;" data-loaded="false">
+                <ul>
+                    <!-- Not Downloaded Section -->
+                    <li>
+                        <h3>Not Downloaded</h3>
+                        <ul id="not-downloaded-list-<%= favorite.rvp.id %>-favorite">
+                            <!-- PDFs will be dynamically loaded here -->
+                        </ul>
+                    </li>
+                    <!-- Downloaded Section -->
+                    <li>
+                        <h3>Downloaded</h3>
+                        <ul id="downloaded-list-<%= favorite.rvp.id %>-favorite">
+                            <!-- PDFs will be dynamically loaded here -->
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        <% end %>
+    </ul>
   </div>
   <label for="year-filter">Select Year:</label>
   <select id="year-filter" name="year">

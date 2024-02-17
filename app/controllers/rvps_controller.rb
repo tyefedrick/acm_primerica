@@ -67,7 +67,8 @@ class RvpsController < ApplicationController
   def all_files
     @pdfs = Pdf.all
     @rvps = Rvp.all
-  
+    @favorites = current_user.favorites
+
     # Query distinct years based on the formatted_date attribute
     @years = @pdfs.reject { |pdf| pdf.formatted_date.nil? }
                    .map { |pdf| pdf.formatted_date.year }
