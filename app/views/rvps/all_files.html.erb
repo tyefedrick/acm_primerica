@@ -4,7 +4,7 @@
   <div id="favorites-section">
     <h3>Favorites</h3>
     <ul id="favorites-list">
-        <% @favorites.each_with_index do |favorite, index| %>
+        <% @sorted_favorites.each_with_index do |favorite, index| %>
           <li class="favorite_rvp">
             <h2 class="rvp-favorite" data-rvp-id="<%= favorite.rvp.id %>">
               <span class="arrow">&#9654;</span>

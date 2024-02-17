@@ -80,6 +80,12 @@ class RvpsController < ApplicationController
       @favorite_pdfs[pdf.rvp_id] << pdf
     end
 
+    # Fetch the favorites and include the associated RVPs
+    favorites_with_rvps = current_user.favorites.includes(:rvp)
+
+    # Sort the favorites by the RVP's first name
+    @sorted_favorites = favorites_with_rvps.sort_by { |favorite| favorite.rvp.first_name }
+
     # Query distinct years based on the formatted_date attribute
     @years = @pdfs.reject { |pdf| pdf.formatted_date.nil? }
                    .map { |pdf| pdf.formatted_date.year }
