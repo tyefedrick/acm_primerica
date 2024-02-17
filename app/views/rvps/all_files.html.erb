@@ -55,14 +55,14 @@
         <li>
           <h3>Not Downloaded</h3>
           <ul id="not-downloaded-list">
-            <%= render partial: "not_downloaded" locals: { pdfs: rvp.pdfs } %>
+            <%= render partial: "not_downloaded", locals: { pdfs: rvp.pdfs } %>
           </ul>
         </li>
       <!-- Downloaded Section -->
         <li>
           <h3>Downloaded</h3>
           <ul id="downloaded-list">
-            <%= render partial: "downloaded" locals: { pdfs: rvp.pdfs} %>
+            <%= render partial: "downloaded", locals: { pdfs: rvp.pdfs} %>
           </ul>
         </li>
       </ul>
