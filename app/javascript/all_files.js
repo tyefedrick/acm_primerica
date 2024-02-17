@@ -49,12 +49,25 @@ function toggleFavorite(rvpId, starElement, event) {
 function addFavoriteToSection(rvpId) {
     // Get the RVP element
     const rvpElement = document.getElementById(`rvp-${rvpId}`);
+    // Find the file elements associated with the RVP
+    const filesList = document.querySelectorAll(`.file-item[data-rvp-id="${rvpId}"]`);
+  
     if (rvpElement) {
-        // Clone the RVP element and append it to the favorites section
-        const clone = rvpElement.cloneNode(true);
-        document.getElementById('favorites-section').appendChild(clone);
+      // Clone the RVP element and append it to the favorites section
+      const rvpClone = rvpElement.cloneNode(true);
+      rvpClone.id = `favorite-rvp-${rvpId}`; // Ensure the clone has a unique ID
+      const favoritesSection = document.getElementById('favorites-section');
+      favoritesSection.appendChild(rvpClone);
+  
+      // Clone each file associated with this RVP
+      filesList.forEach(file => {
+        const fileClone = file.cloneNode(true);
+        // Ensure each cloned file has a unique ID
+        fileClone.id = `favorite-${fileClone.id}`;
+        favoritesSection.appendChild(fileClone);
+      });
     }
-}
+  }
 
 // Function to remove favorite from the favorites section in the UI
 function removeFavoriteFromSection(rvpId) {

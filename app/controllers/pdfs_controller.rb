@@ -5,6 +5,10 @@ class PdfsController < ApplicationController
     def all_files
       @pdfs = Pdf.all
       @rvps = Rvp.all
+      @favorites = current_user.favorites.pluck(:rvp_id)
+
+      # This will map each favorite RVP ID to its associated PDFs
+      @favorite_pdfs = Pdf.where(rvp_id: @favorites).group_by(&:rvp_id)
     
       if params[:year].present?
         @selected_year = params[:year].to_i
