@@ -5,7 +5,7 @@
     <h3>Favorites</h3>
     <ul id="favorites-list">
         <% @favorites.each_with_index do |favorite, index| %>
-          <li>
+          <li class="favorite_rvp">
             <h2 class="rvp-favorite" data-rvp-id="<%= favorite.rvp.id %>">
               <span class="arrow">&#9654;</span>
               <%= "#{favorite.rvp.first_name} #{favorite.rvp.last_name} - #{favorite.rvp.solution_number}" %>
@@ -119,5 +119,9 @@
   }
   .favorite.favorited {
     color: gold;
+  }
+
+  .favorite_rvp {
+     list-style-type: none; /* This removes the bullet point */
   }
 </style>
