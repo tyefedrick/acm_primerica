@@ -90,6 +90,7 @@
           <h3>Downloaded</h3>
           <ul id="downloaded-list">
             <% rvp.pdfs.each do |pdf| %>
+             <% if pdf.downloaded_by?(current_user) %>
               <!-- Display the form information -->
               <% full_name = pdf.full_name %> <!-- Get the full name from the PDF model -->
               <li>
@@ -98,6 +99,7 @@
                 <!-- Add a link to download the form -->
                <a href="<%= download_pdf_path(pdf.id) %>" class="download-link" data-pdf-id="<%= pdf.id %>" download>Download</a>
               </li>
+              <% end %>
             <% end %>
           </ul>
         </li>
