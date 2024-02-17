@@ -1,0 +1,10 @@
+
+<% pdfs.each do |pdf| %>
+    <% unless pdf.downloaded_by?(current_user) %>
+        <li>
+            <%= check_box_tag "selected_files[]", pdf.id %>
+            <%= "#{pdf.full_name} AMC Form #{pdf.formatted_date}.pdf" %>
+            <a href="<%= download_pdf_path(pdf.id) %>" class="download-link" data-pdf-id="<%= pdf.id %>" download>Download</a>
+        </li>
+    <% end %>
+<% end %>

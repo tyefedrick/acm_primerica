@@ -18,30 +18,14 @@
                 <li>
                   <h3>Not Downloaded</h3>
                   <ul>
-                    <% favorite_pdfs.each do |pdf| %>
-                      <% unless pdf.downloaded_by?(current_user) %>
-                        <li>
-                          <%= check_box_tag "selected_files[]", pdf.id %>
-                          <%= "#{pdf.full_name} AMC Form #{pdf.formatted_date}.pdf" %>
-                          <a href="<%= download_pdf_path(pdf.id) %>" class="download-link" data-pdf-id="<%= pdf.id %>" download>Download</a>
-                        </li>
-                      <% end %>
-                    <% end %>
+                    <%= render partial: "not_downloaded", locals: { pdfs: favorite_pdfs } %>
                   </ul>
                 </li>
                 <!-- Downloaded Section -->
                 <li>
                   <h3>Downloaded</h3>
                   <ul>
-                    <% favorite_pdfs.each do |pdf| %>
-                      <% if pdf.downloaded_by?(current_user) %>
-                        <li>
-                          <%= check_box_tag "selected_files[]", pdf.id %>
-                          <%= "#{pdf.full_name} AMC Form #{pdf.formatted_date}.pdf" %>
-                          <a href="<%= download_pdf_path(pdf.id) %>" class="download-link" data-pdf-id="<%= pdf.id %>" download>Download</a>
-                        </li>
-                      <% end %>
-                    <% end %>
+                    <%= render partial: "downloaded", locals: { pdfs: favorite_pdfs } %>
                   </ul>
                 </li>
               </ul>
@@ -71,36 +55,14 @@
         <li>
           <h3>Not Downloaded</h3>
           <ul id="not-downloaded-list">
-            <% rvp.pdfs.each do |pdf| %>
-              <% unless pdf.downloaded_by?(current_user) %>
-                <!-- Display the form information -->
-                <% full_name = pdf.full_name %> <!-- Get the full name from the PDF model -->
-                <li>
-                  <%= check_box_tag "selected_files[]", pdf.id %>
-                  <%= "#{full_name} AMC Form #{pdf.formatted_date}.pdf" %>
-                  <!-- Add a link to download the form -->
-                 <a href="<%= download_pdf_path(pdf.id) %>" class="download-link" data-pdf-id="<%= pdf.id %>" download>Download</a>
-                </li>
-              <% end %>
-            <% end %>
+            <%= render partial: "not_downloaded" locals: { pdfs: rvp.pdfs } %>
           </ul>
         </li>
       <!-- Downloaded Section -->
         <li>
           <h3>Downloaded</h3>
           <ul id="downloaded-list">
-            <% rvp.pdfs.each do |pdf| %>
-             <% if pdf.downloaded_by?(current_user) %>
-              <!-- Display the form information -->
-              <% full_name = pdf.full_name %> <!-- Get the full name from the PDF model -->
-              <li>
-                <%= check_box_tag "selected_files[]", pdf.id %> <!-- Remove the { checked: true } option -->
-                <%= "#{full_name} AMC Form #{pdf.formatted_date}.pdf" %>
-                <!-- Add a link to download the form -->
-               <a href="<%= download_pdf_path(pdf.id) %>" class="download-link" data-pdf-id="<%= pdf.id %>" download>Download</a>
-              </li>
-              <% end %>
-            <% end %>
+            <%= render partial: "downloaded" locals: { pdfs: rvp.pdfs} %>
           </ul>
         </li>
       </ul>
