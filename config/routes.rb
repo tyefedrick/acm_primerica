@@ -29,5 +29,7 @@ Rails.application.routes.draw do
 
   # Rvps routes
   get '/rvps', to: 'rvps#index', as: :rvps
-  resources :rvps
+  resources :rvps do
+    resources :pdfs, only: [:index] # Adjust this according to your routes structure
+  end
 end
