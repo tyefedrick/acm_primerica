@@ -22,6 +22,10 @@
     <div class="col">
       <div class="form-group">
         <label for="rvp">Who is your RVP?</label>
+        <!-- Search input -->
+        <input type="text" id="rvpSearchInput" class="form-control" placeholder="Search for RVP...">
+        
+        <!-- Dropdown select with options -->
         <select class="form-control" id="rvp" name="rvp">
           <option value="">Select Your RVP</option>
           <% sorted_rvps = fetch_all_rvps.sort_by { |rvp| rvp.first_name } %>
