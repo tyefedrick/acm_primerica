@@ -172,20 +172,6 @@ window.addEventListener('beforeunload', function () {
     sessionStorage.setItem('refreshRvpPage', 'true');
 });
 
-// Check if the flag exists and reload the page if needed
-document.addEventListener('DOMContentLoaded', function () {
-    const shouldRefresh = sessionStorage.getItem('refreshRvpPage');
-    if (shouldRefresh === 'true') {
-        sessionStorage.removeItem('refreshRvpPage'); // Remove the flag
-
-        // Ask the user if they want to reload the page
-        const userResponse = confirm('Do you want to reload the page?');
-        if (userResponse) {
-            location.reload(); // Reload the page
-        }
-    }
-});
-
 // Function to handle expanding/collapsing favorites section and load PDFs
 function toggleFavoriteSection(rvpId) {
     const filesSection = document.getElementById(`files_${rvpId}-favorite`);
