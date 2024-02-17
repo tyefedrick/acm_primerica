@@ -235,21 +235,22 @@ function loadFavoritePdfList(rvpId) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Event listener for toggling visibility of dropdown content in the favorites section
-    document.querySelectorAll('.rvp-favorite').forEach(rvp => {
-        rvp.addEventListener('click', function (event) {
-            const rvpId = this.getAttribute('data-rvp-id');
+    // Delegated event for the entire document
+    document.addEventListener('click', function (event) {
+        // Check if the clicked element is a favorite star
+        if (event.target.classList.contains('favorite')) {
+            // Prevent the dropdown from toggling if the favorite star is clicked
+            event.stopPropagation();
+            const rvpId = event.target.getAttribute('data-rvp-id');
+            toggleFavorite(rvpId, event.target, event);
+        }
+        // Check if the clicked element is an RVP (but not a favorite star)
+        else if (event.target.closest('.rvp-favorite') && !event.target.classList.contains('favorite')) {
+            // Get the closest .rvp-favorite parent to ensure we're toggling the correct dropdown
+            const rvpElement = event.target.closest('.rvp-favorite');
+            const rvpId = rvpElement.getAttribute('data-rvp-id');
             toggleFavoriteSection(rvpId);
-        });
-    });
-
-    // Event listener for download links in the favorites section
-    document.querySelectorAll('.download-link-favorite').forEach(link => {
-        link.addEventListener('click', function (event) {
-            event.preventDefault(); // Prevent the default link behavior
-            const pdfId = this.getAttribute('data-pdf-id');
-            downloadPdf(pdfId, this);
-        });
+        }
     });
 
     // Event listener for favorite toggle in the favorites section
