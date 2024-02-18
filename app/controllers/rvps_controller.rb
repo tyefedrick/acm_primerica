@@ -4,7 +4,7 @@ class RvpsController < ApplicationController
   # GET /rvps or /rvps.json
   def index
     @rvps = Rvp.all
-    @rvps = @rvps.sort_by { |rvp| [rvp.favorite_by_user?(current_user), rvp.first_name] }
+    @rvps = Rvp.all.sort_by { |rvp| [rvp.favorite_by_user?(current_user) ? "0" : "1", rvp.first_name] }
     puts @rvps.inspect  # Debugging line to print @rvps to console
   end
 
