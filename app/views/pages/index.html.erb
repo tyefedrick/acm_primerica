@@ -11,30 +11,32 @@
     </h1>
 </div>
 
-  <div class="container text-center">
+<div class="container text-center">
   <div class="row">
+
     <div class="col">
       <div class="form-group">
         <label for="fullName">Full Name</label>
         <input type="text" class="form-control" id="fullName" placeholder="Full Name">
       </div>
     </div>
+
     <div class="col">
       <div class="form-group">
         <label for="rvp">Who is your RVP?</label>
         <!-- Search input -->
         <input type="text" id="rvpSearchInput" class="form-control" placeholder="Search for RVP...">
-        
         <!-- Dropdown select with options -->
         <select class="form-control" id="rvp" name="rvp">
           <option value="">Select Your RVP</option>
           <% sorted_rvps = fetch_all_rvps.sort_by { |rvp| rvp.first_name } %>
           <% sorted_rvps.each do |rvp| %>
-            <option value="<%= rvp.id %>"><%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %></option>
+          <option value="<%= rvp.id %>"><%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %></option>
           <% end %>
         </select>
       </div>
     </div>
+
     <div class="col">
       <div class="form-group">
         <label for="solutionNumber">Rep Solution Number</label>
@@ -55,48 +57,50 @@
     </ul>
   </div>
 </div>
-  <div class="container">
-    <p>
+
+<div class="container">
+  <p>
     By signing below, I certify that I have personally attended and correctly completed the <%= Time.now.year %> Annual Compliance Meeting, as required by the licenses I hold or the products I sell. My signature makes me accountable for compliance with the law and with Primerica ethics and compliance policies. I will use due diligence to ensure that my business conduct, the conduct of those I supervise, and the business conduct of my associates, is in compliance with the law and with Primerica policy.
-    </p>
+  </p>
 
-    <p>
+  <p>
     By signing below, I also certify that I have read and accurately completed the <%= Time.now.year %> ACM Disclosure and/or Discrepancies (if applicable) on the reverse side of this form.
-    </p>
+  </p>
 
-    <p>
+  <p>
     I will report any suspected violation of a law, regulation or Primerica compliance standard, and any request made of me to do anything improper or illegal, to my upline RVP, to my OSJA and to appropriate members of the Office of the General Counsel. I have reported any such matters arising in <%= Time.now.year %> to such persons. Any disclosures not previously made to such persons are included in detail on the reverse side on the Disclosures and/or Discrepancies form.
-    </p>
+  </p>
 
-    <p>
+  <p>
     I will require of myself, and will expect from my fellow Reps, the highest level of ethical conduct.
-    </p>
-  </div>
+  </p>
+</div>
 
-  <div class="container text-center">
-    <div class="row">
-      <div class="col">
-          <input type="text" class="form-control cursive-input" id="repSignature" placeholder="John Doe" required>
-          <p>Rep's E-Signature</p>
-          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Rep's Name">
-          <p>Rep's Printed Name (as signed)</p>
-         <input type="date" class="form-control" id="todaysDate" placeholder="Today's Date">
-          <p>Today's Date</p> 
-      </div>
+<div class="container text-center">
+  <div class="row">
 
-      <div class="col">
-        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="AMC Proctor's Name">
-       <p>AMC Proctor's Name</p> 
-       <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Date of ACM Completion">
-          <p>Date of ACM Completion</p> 
-      </div>
+    <div class="col">
+      <input type="text" class="form-control cursive-input" id="repSignature" placeholder="John Doe" required>
+      <p>Rep's E-Signature</p>
+      <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Rep's Name">
+      <p>Rep's Printed Name (as signed)</p>
+      <input type="date" class="form-control" id="todaysDate" placeholder="Today's Date">
+      <p>Today's Date</p> 
+    </div>
 
-  <div class="text-center">
-    <h5><%= Time.now.year %> ACM DISCLOSURES AND/OR DISCREPANCIES
-    </h5>
-  </div>
+    <div class="col">
+      <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="AMC Proctor's Name">
+      <p>AMC Proctor's Name</p> 
+      <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Date of ACM Completion">
+      <p>Date of ACM Completion</p> 
+    </div>
 
-  <div class="container">
+    <div class="text-center">
+      <h5><%= Time.now.year %> ACM DISCLOSURES AND/OR DISCREPANCIES
+      </h5>
+    </div>
+
+    <div class="container">
       <p>Use this form to explain Representation(s) as outlined in the respective section of the <%= Time.now.year %> Workbook (published on POL) for products which you are authorized to represent and that you do not meet in the year <%= Time.now.year %> or that you do not agree to meet. Be sure to provide any available supporting documents, which may include, but not be limited to, court orders, written procedures, authorizations, lists of individuals involved, addresses and phone numbers for individuals involved. If you report disclosures or discrepancies on this form, you must provide your RVP with a copy. Call the Compliance Help Desk at 1-800-243-8901 with any questions regarding discrepancies/disclosures.
       </p>
       <p>
@@ -161,7 +165,7 @@
 
 </div>
 
-<button id="download">Download as PDF</button>
+<button id="download">Submit</button>
 
 </div>
 

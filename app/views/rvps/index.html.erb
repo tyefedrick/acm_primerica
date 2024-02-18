@@ -2,6 +2,10 @@
 
 <h1>Rvps</h1>
 
+<%= link_to "New rvp", new_rvp_path %>
+
+<br/>
+
 <div id="rvps">
   <% @rvps.each do |rvp| %>
     <%= render rvp %>
@@ -10,5 +14,7 @@
     </p>
   <% end %>
 </div>
+
+<br/>
 
 <%= link_to "New rvp", new_rvp_path %>

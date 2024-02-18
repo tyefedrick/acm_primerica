@@ -3,6 +3,7 @@
 <p>Your email: <%= current_user.email %></p>
 
 <h2>Change Password</h2>
+
 <%= form_with(model: current_user, url: change_password_dashboard_path, method: :patch) do |form| %>
   <%= form.label :current_password, "Current Password" %>
   <%= form.password_field :current_password %>

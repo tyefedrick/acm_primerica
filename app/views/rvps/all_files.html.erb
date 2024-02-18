@@ -1,75 +1,48 @@
-<% @rvps = @rvps.sort_by { |rvp| rvp.first_name } %>
-<%= form_tag(download_selected_pdfs_path, method: :post, data: { turbo: false }) do %>
-  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-  <div id="favorites-section">
-    <h3>Favorites</h3>
-    <ul id="favorites-list">
-        <% @sorted_favorites.each_with_index do |favorite, index| %>
-          <li class="favorite_rvp">
-            <h2 class="rvp-favorite" data-rvp-id="<%= favorite.rvp.id %>">
-              <span class="arrow">&#9654;</span>
-              <%= "#{favorite.rvp.first_name} #{favorite.rvp.last_name} - #{favorite.rvp.solution_number}" %>
-              <span class="favorite <%= 'favorited' if favorite.rvp.favorite_by_user?(current_user) %>" data-rvp-id="<%= favorite.rvp.id %>">☆</span>
-            </h2>
-            <div id="files_<%= favorite.rvp.id %>-favorite" style="display: none;" data-loaded="false">
-              <ul>
-                <% favorite_pdfs = @favorite_pdfs[favorite.rvp.id] || [] %>
-                <!-- Not Downloaded Section -->
-                <li>
-                  <h3>Not Downloaded</h3>
-                  <ul>
-                    <%= render partial: "not_downloaded", locals: { pdfs: favorite_pdfs } %>
-                  </ul>
-                </li>
-                <!-- Downloaded Section -->
-                <li>
-                  <h3>Downloaded</h3>
-                  <ul>
-                    <%= render partial: "downloaded", locals: { pdfs: favorite_pdfs } %>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </li>
-        <% end %>
-    </ul>
-  </div>
+<h1>RVPs</h1>
 
-  <label for="year-filter">Select Year:</label>
-  <select id="year-filter" name="year">
-    <option value="<%= @selected_year %>"><%= @selected_year %> (Current Year)</option>
-    <option value="">All Years</option>
-    <% @years.each do |year| %>
-      <option value="<%= year %>"><%= year %></option>
-    <% end %>
-  </select>
-  <% @rvps.each_with_index do |rvp, index| %>
-    <h2 onclick="toggleVisibility('files_<%= index %>')">
-      <span class="arrow">&#9654;</span> <!-- Right arrow -->
-      <%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %>
-      <span class="favorite <%= rvp.favorite_by_user?(current_user) ? 'favorited' : '' %>" id="star-main-<%= rvp.id %>" onclick="toggleFavorite('<%= rvp.id %>', this, event)">☆</span>
-    </h2>
-    <div id="files_<%= index %>" style="display: none;">
-      <ul>
-        <!-- Not Downloaded Section -->
-        <li>
-          <h3>Not Downloaded</h3>
-          <ul id="not-downloaded-list">
-            <%= render partial: "not_downloaded", locals: { pdfs: rvp.pdfs } %>
-          </ul>
-        </li>
-      <!-- Downloaded Section -->
-        <li>
-          <h3>Downloaded</h3>
-          <ul id="downloaded-list">
-            <%= render partial: "downloaded", locals: { pdfs: rvp.pdfs} %>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  <% end %>
-  <%= submit_tag "Download Selection" %>
+<% @rvps.each do |rvp| %>
+  <span><%= link_to rvp.formatted_name, rvp_path(rvp.id) %></span>
+  <span class="favorite <%= rvp.favorite_by_user?(current_user) ? 'favorited' : '' %>" data-rvp-id = "<%=rvp.id%>" id="star-main-<%= rvp.id %>">
+    ☆
+  </span>
+  
+  <br/>
+  
 <% end %>
+
+<script>
+  $(".favorites").on("click", function() {
+
+    let rvpId = $(this).data("rvp-id")
+    console.log("test")
+
+    let isFavorite = "true"
+
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    fetch('/favorites/update', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': token,
+        },
+        body: { rvp_id: rvpId, favorite: isFavorite },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        $(this).addClass("favorited")
+    })
+    .catch(error => {
+        console.error("Error updating favorite status:", error);
+    });
+  })
+</script>
+
 <style>
   .arrow {
     display: inline-block;

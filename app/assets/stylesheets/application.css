@@ -14,7 +14,7 @@
  *= require_self
  */
 
- .body_container{
+.body_container{
     max-width: 1440px; /* Set the maximum width to 1440 pixels */
     margin: 0 auto; /* Center the container horizontally */
     box-shadow: 0 3px 4px -1px rgba(0,0,0,.25); 

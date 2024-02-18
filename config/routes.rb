@@ -23,6 +23,7 @@ Rails.application.routes.draw do
 
   # Favorites routes
   post 'favorites/update', to: 'favorites#update'
+  get 'favorites/update', to: 'favorites#update'
 
   # Some other custom route
   get '/some_other_path', to: 'some_controller#some_action', as: :some_other_path

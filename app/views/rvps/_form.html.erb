@@ -1,8 +1,9 @@
 <%= form_with(model: rvp) do |form| %>
   <% if rvp.errors.any? %>
     <div style="color: red">
-      <h2><%= pluralize(rvp.errors.count, "error") %> prohibited this rvp from being saved:</h2>
-
+      <h2><%= pluralize(rvp.errors.count, "error") %> prohibited this rvp from being saved:
+      </h2>
+      
       <ul>
         <% rvp.errors.each do |error| %>
           <li><%= error.full_message %></li>

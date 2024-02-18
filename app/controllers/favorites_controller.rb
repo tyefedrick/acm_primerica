@@ -1,11 +1,12 @@
 class FavoritesController < ApplicationController
-    before_action :authenticate_user! # Ensure user is authenticated
+  skip_before_action :verify_authenticity_token
+
+  before_action :authenticate_user! # Ensure user is authenticated
   
     def update
         ActiveRecord::Base.transaction do
           # Find or initialize the favorite record
           favorite = Favorite.find_or_initialize_by(user_id: current_user.id, rvp_id: params[:rvp_id])
-    
           if params[:favorite] == 'true' || params[:favorite] == true
             if favorite.valid?  # Check if the record is valid
               favorite.save

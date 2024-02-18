@@ -4,12 +4,13 @@ class RvpsController < ApplicationController
   # GET /rvps or /rvps.json
   def index
     @rvps = Rvp.all
-    @rvps = @rvps.sort_by { |rvp| rvp.first_name }
+    @rvps = @rvps.sort_by { |rvp| [rvp.favorite_by_user?(current_user), rvp.first_name] }
     puts @rvps.inspect  # Debugging line to print @rvps to console
   end
 
   # GET /rvps/1 or /rvps/1.json
   def show
+    @pdfs = @rvp.pdfs
   end
 
   # GET /rvps/new
@@ -65,32 +66,7 @@ class RvpsController < ApplicationController
   end
 
   def all_files
-    @pdfs = Pdf.all
-    @rvps = Rvp.all
-    @favorites = current_user.favorites
-
-    # Initialize @favorite_pdfs as an empty hash
-    @favorite_pdfs = Hash.new { |hash, key| hash[key] = [] }
-
-    # Assuming 'favorites' is a method that returns the RVP IDs of the user's favorites
-    favorite_rvp_ids = current_user.favorites.pluck(:rvp_id)
-
-    # Preload PDFs for the favorited RVPs
-    Pdf.where(rvp_id: favorite_rvp_ids).find_each do |pdf|
-      @favorite_pdfs[pdf.rvp_id] << pdf
-    end
-
-    # Fetch the favorites and include the associated RVPs
-    favorites_with_rvps = current_user.favorites.includes(:rvp)
-
-    # Sort the favorites by the RVP's first name
-    @sorted_favorites = favorites_with_rvps.sort_by { |favorite| favorite.rvp.first_name }
-
-    # Query distinct years based on the formatted_date attribute
-    @years = @pdfs.reject { |pdf| pdf.formatted_date.nil? }
-                   .map { |pdf| pdf.formatted_date.year }
-                   .uniq
-                   .sort
+    @rvps = Rvp.all.sort_by { |rvp| [rvp.favorite_by_user?(current_user) ? "0" : "1", rvp.first_name] }
   end
 
   private
