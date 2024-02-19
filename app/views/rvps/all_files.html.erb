@@ -1,14 +1,16 @@
-<h1>RVPs</h1>
-
-<% @rvps.each do |rvp| %>
-  <span><%= link_to rvp.formatted_name, rvp_path(rvp.id) %></span>
-  <span class="favorite <%= rvp.favorite_by_user?(current_user) ? 'favorited' : '' %>" data-rvp-id = "<%=rvp.id%>" id="star-main-<%= rvp.id %>">
-    ☆
-  </span>
-  
-  <br/>
-  
-<% end %>
+<div class="container mt-4">
+  <h1 class="mb-4">RVPs</h1>
+  <ul class="list-group">
+    <% @rvps.each do |rvp| %>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <%= link_to rvp.formatted_name, rvp_path(rvp.id), class: "mr-auto" %>
+        <span class="favorite <%= rvp.favorite_by_user?(current_user) ? 'favorited' : '' %>" data-rvp-id="<%= rvp.id %>">
+          ☆
+        </span>
+      </li>
+    <% end %>
+  </ul>
+</div>
 
 <script>
   $(".favorites").on("click", function() {
