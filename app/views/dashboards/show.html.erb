@@ -1,18 +1,51 @@
-<h1>Welcome!</h1>
-<p>This is your dashboard where you can manage your account.</p>
-<p>Your email: <%= current_user.email %></p>
+<div class="container ">
+  <div class="row mt-5">
+    <div class="col-md-8 offset-md-2 dashboard-page-content">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="text-center">Welcome!</h1>
+        </div>
+        <div class="card-body">
+          <p class="lead text-center">This is your dashboard where you can manage your password.</p>
+          <p class="text-center">Your email: <%= current_user.email %></p>
 
-<h2>Change Password</h2>
+          <hr>
 
-<%= form_with(model: current_user, url: change_password_dashboard_path, method: :patch) do |form| %>
-  <%= form.label :current_password, "Current Password" %>
-  <%= form.password_field :current_password %>
+          <h2 class="text-center">Change Password</h2>
 
-  <%= form.label :password, "New Password" %>
-  <%= form.password_field :password %>
+          <%= form_with(model: current_user, url: change_password_dashboard_path, method: :patch) do |form| %>
+            <div class="form-group">
+              <%= form.label :current_password, "Current Password" %>
+              <%= form.password_field :current_password, class: "form-control", required: true %>
+            </div>
 
-  <%= form.label :password_confirmation, "Confirm New Password" %>
-  <%= form.password_field :password_confirmation %>
+            <div class="form-group">
+              <%= form.label :password, "New Password" %>
+              <%= form.password_field :password, class: "form-control", required: true %>
+            </div>
 
-  <%= form.submit "Change Password" %>
-<% end %>
+            <div class="form-group">
+              <%= form.label :password_confirmation, "Confirm New Password" %>
+              <%= form.password_field :password_confirmation, class: "form-control", required: true %>
+            </div>
+
+            <div class=" dashboard-change-password text-center">
+              <%= form.submit "Change Password", class: "btn btn-primary btn-block" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.dashboard-page-content {
+  padding-top: 300px; /* Adjust the value as needed */
+  padding-bottom: 450px; /* Adjust the value as needed */
+}
+
+.dashboard-change-password{
+  padding-top:20px;
+}
+</style>
