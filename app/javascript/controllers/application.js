@@ -1,3 +1,5 @@
+//= require select2
+
 import { Application } from "@hotwired/stimulus"
 import Rails from '@rails/ujs';
 

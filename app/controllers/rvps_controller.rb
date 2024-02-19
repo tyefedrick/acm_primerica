@@ -6,6 +6,7 @@ class RvpsController < ApplicationController
     @rvps = Rvp.all
     @rvps = Rvp.all.sort_by { |rvp| [rvp.favorite_by_user?(current_user) ? "0" : "1", rvp.first_name] }
     puts @rvps.inspect  # Debugging line to print @rvps to console
+    #@sorted_rvps = fetch_all_rvps.sort_by { |rvp| rvp.first_name }
   end
 
   # GET /rvps/1 or /rvps/1.json

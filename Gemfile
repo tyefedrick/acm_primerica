@@ -46,6 +46,7 @@ gem 'devise'
 gem 'cancancan'
 gem 'letter_opener', group: :development
 gem 'rubyzip', require: 'zip'
+gem 'select2-rails'
 
 
 # Use Sass to process CSS
