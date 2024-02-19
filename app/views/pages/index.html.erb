@@ -21,7 +21,7 @@
     <div class="col">
       <div class="form-group">
         <label for="fullName">Full Name</label>
-        <input type="text" class="form-control" id="fullName" placeholder="Full Name">
+        <input type="text" class="full-name form-control" id="fullName" placeholder="Full Name">
       </div>
     </div>
 
@@ -50,7 +50,7 @@
 </div>
 
 <div class="container text-center">
-  <div class="box p-4 rounded border border-primary text-center">
+  <div class=" acm-form-box box p-4 rounded border border-primary text-center">
     <h2>Annual Compliance Meeting <%= Time.now.year %> (Life)</h2>
     <p>I have reviewed and understand the compliance rules and regulations noted in the Annual Compliance Meeting presentation, have completed the Annual Compliance Section of the Program, and have reviewed the Representations for Primerica Representatives published with the Workbook on POL. Any representation that I cannot make is noted on the Disclosure and/or Discrepancies form on the back of this page with a brief explanation. – Use the lines at the bottom of the form and/or a separate sheet.</p>
     <ul>
@@ -178,7 +178,15 @@
 #pdf-content {
         min-width: 1200px; /* Set the minimum width */
         overflow-x: auto; /* Add horizontal scrollbar if content overflows */
-    }
+}
+.acm-form-box{
+  margin-top: 5px !important;
+}
+
+.form-control{
+  height: 30px !important;
+  border-color: #999;
+}
 </style>
 
 <script>
