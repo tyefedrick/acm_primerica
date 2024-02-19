@@ -1,4 +1,4 @@
-<div class="container ">
+<div class="container">
   <div class="row mt-5">
     <div class="col-md-8 offset-md-2 dashboard-page-content">
       <div class="card">
@@ -10,6 +10,14 @@
           <p class="text-center">Your email: <%= current_user.email %></p>
 
           <hr>
+
+         <div class="dashboard-flash-notices container">
+            <% flash.each do |key, value| %>
+              <div class="alert alert-<%= key %>">
+                <%= value %>
+              </div>
+            <% end %>
+          </div>
 
           <h2 class="text-center">Change Password</h2>
 
@@ -29,7 +37,7 @@
               <%= form.password_field :password_confirmation, class: "form-control", required: true %>
             </div>
 
-            <div class=" dashboard-change-password text-center">
+            <div class="dashboard-change-password text-center">
               <%= form.submit "Change Password", class: "btn btn-primary btn-block" %>
             </div>
           <% end %>
@@ -40,6 +48,10 @@
 </div>
 
 <style>
+.dashboard-flash-notices{
+  text-align: center;
+}
+
 .dashboard-page-content {
   padding-top: 300px; /* Adjust the value as needed */
   padding-bottom: 450px; /* Adjust the value as needed */
