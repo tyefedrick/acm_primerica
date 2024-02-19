@@ -1,20 +1,51 @@
-<p style="color: green"><%= notice %></p>
+<div class="container">
+    <!-- Display notice with Bootstrap alert -->
+    <p style="color: green"><%= notice %></p>
 
-<h1>Rvps</h1>
+    <h1>RVP Management</h1>
 
-<%= link_to "New rvp", new_rvp_path %>
+    <!-- Button styled with Bootstrap -->
+    <div class="text-center">
+      <%= link_to "New RVP", new_rvp_path, class: "btn btn-primary mb-4" %>
+    </div>
+    <!-- Loop through RVPs -->
+    <div id="rvps" class="row">
+      <% @rvps.each do |rvp| %>
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <!-- RVP content goes here -->
+              <%= render rvp %>
+              <!-- Show RVP link styled with Bootstrap -->
+              <p class="text-center mt-3">
+                <%= link_to "Show this RVP", rvp, class: "btn btn-primary" %>
+              </p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
 
-<br/>
-
-<div id="rvps">
-  <% @rvps.each do |rvp| %>
-    <%= render rvp %>
-    <p>
-      <%= link_to "Show this rvp", rvp %>
-    </p>
-  <% end %>
+    <!-- Another New RVP button styled with Bootstrap -->
+    <div class="text-center">
+      <%= link_to "New RVP", new_rvp_path, class: "btn btn-primary" %>
+    </div>
 </div>
 
-<br/>
+<style>
+/* Additional custom styles */
+h1 {
+  margin-bottom: 20px;
+  text-align: center;
+}
 
-<%= link_to "New rvp", new_rvp_path %>
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+</style>
