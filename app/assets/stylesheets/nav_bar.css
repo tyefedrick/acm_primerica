@@ -1,7 +1,46 @@
-.navbar{
-    border-top: 1px solid rgba(0,0,0,.15);
-    border-bottom: 1px solid rgba(0,0,0,.15);
-    box-shadow: 0 3px 4px -1px rgba(0,0,0,.25);
-    max-width: 1440px; /* Set the maximum width to 1440 pixels */
-    margin: 0 auto; /* Center the container horizontally */
+.navbar {
+  border-top: 1px solid rgba(0,0,0,.15);
+  border-bottom: 1px solid rgba(0,0,0,.15);
+  box-shadow: 0 3px 4px -1px rgba(0,0,0,.25);
+  max-width: 1440px; /* Set the maximum width to 1440 pixels */
+  margin: 0 auto; /* Center the container horizontally */
+}
+
+.navbar-container {
+  font-family: Arial, sans-serif; /* Choose any font you prefer */
+}
+
+.navbar-brand {
+  font-size: 24px; /* Adjust the font size as needed */
+  text-decoration: none; /* Remove default underline */
+  letter-spacing: -2px; /* Adjust letter spacing to reduce the gap */
+  margin-left: 20px;
+}
+
+.navbar-red {
+  color: #ff3818;; /* Change color to red */
+  text-shadow: 1px 1px 1px #373535; /* Add a black outline */
+}
+
+.navbar-white {
+  color: #fefefe; /* Change color to white */
+  text-shadow: 1px 1px 1px #373535; /* Add a black outline */
+}
+
+.navbar-blue {
+  color: #4598d2; /* Change color to blue */
+  text-shadow: 1px 1px 1px #373535; /* Add a black outline */
+}
+
+.centered-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center horizontally */
+}
+
+.icon-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
