@@ -1,5 +1,5 @@
 class RvpsController < ApplicationController
-  before_action :set_rvp, only: %i[ show edit update destroy ]
+  before_action :set_rvp, only: %i[ show edit update destroy unarchive ]
 
   # GET /rvps or /rvps.json
   def index
@@ -53,10 +53,10 @@ class RvpsController < ApplicationController
 
   # DELETE /rvps/1 or /rvps/1.json
   def destroy
-    @rvp.destroy
+    @rvp.archive
 
     respond_to do |format|
-      format.html { redirect_to rvps_url, notice: "Rvp was successfully destroyed." }
+      format.html { redirect_to rvps_url, notice: "Rvp was successfully archived." }
       format.json { head :no_content }
     end
   end
@@ -70,10 +70,26 @@ class RvpsController < ApplicationController
     @rvps = Rvp.all.sort_by { |rvp| [rvp.favorite_by_user?(current_user) ? "0" : "1", rvp.first_name] }
   end
 
+  def archived
+    @rvps = Rvp.archived.sort_by { |rvp| [rvp.favorite_by_user?(current_user) ? "0" : "1", rvp.first_name] }
+    puts @rvps.inspect  # Debugging line to print @rvps to console
+    #@sorted_rvps = fetch_all_rvps.sort_by { |rvp| rvp.first_name } 
+  end
+
+  def unarchive
+    @rvp.unarchive
+
+    respond_to do |format|
+      format.html { redirect_to rvps_url, notice: "Rvp was successfully unarchived." }
+      format.json { head :no_content }
+    end 
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_rvp
-      @rvp = Rvp.find(params[:id])
+      id = params[:id] || params[:rvp_id]
+      @rvp = Rvp.unscoped.find(id)
     end
 
     # Only allow a list of trusted parameters through.

@@ -11,7 +11,11 @@
         <div class="card-footer text-center">
           <%= link_to "Edit this rvp", edit_rvp_path(@rvp), class: "btn btn-primary mr-2" %>
           <%= link_to "Back to rvps", all_rvp_files_path, class: "btn btn-secondary mr-2" %>
-          <%= button_to "Destroy this rvp", @rvp, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+          <%if @rvp.archived?%>
+            <%= button_to "Unarchive rvp", rvp_unarchive_path(rvp_id:@rvp.id), method: :post, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>  
+          <%else%>
+            <%= button_to "Archive rvp", @rvp, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+          <%end%>
         </div>
       </div>
     </div>

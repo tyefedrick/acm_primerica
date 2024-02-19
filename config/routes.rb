@@ -32,5 +32,9 @@ Rails.application.routes.draw do
   get '/rvps', to: 'rvps#index', as: :rvps
   resources :rvps do
     resources :pdfs, only: [:index] # Adjust this according to your routes structure
+    post :unarchive
+    collection do
+      get :archived 
+    end
   end
 end
