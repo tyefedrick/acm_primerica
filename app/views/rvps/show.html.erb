@@ -11,7 +11,7 @@
         <div class="card-footer">
           <div class="row justify-content-between">
             <div class="col-md-auto">
-              <%= link_to "Back to rvps", all_rvp_files_path, class: "btn btn-secondary" %>
+              <button id="previousPageButton" class="btn btn-secondary">Back To RVPs</button>
             </div>
             <div class="col-md-auto">
               <% if @rvp.archived? %>
@@ -61,3 +61,9 @@
   list-style: none;
 }
 </style>
+
+<script>
+  document.getElementById("previousPageButton").addEventListener("click", function() {
+    history.back();
+  });
+</script>
