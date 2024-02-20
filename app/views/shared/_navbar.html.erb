@@ -34,7 +34,7 @@
     <div>
       <% if user_signed_in? %>
         <div>
-          <%= button_to "logout", destroy_user_session_path, method: :delete, class: 'btn btn-danger' %>
+          <%= button_to "logout", destroy_user_session_path, method: :delete, class: 'btn btn-danger', onclick: "return confirmLogout();" %>
         </div>
       <% else %>
         <%= link_to "Login", new_user_session_path, class: 'btn btn-primary' %>
@@ -42,3 +42,14 @@
     </div>
   </div>
 </nav>
+
+<script>
+  function confirmLogout() {
+    if(confirm('Are you sure you want to log out?')) {
+      alert('You have successfully logged out.');
+      return true; // Proceed with logout
+    } else {
+      return false; // Cancel logout
+    }
+  }
+</script>
