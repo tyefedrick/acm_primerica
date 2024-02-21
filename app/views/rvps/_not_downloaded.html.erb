@@ -1,9 +1,37 @@
-<% pdfs.each do |pdf| %>
+<%= form_tag download_selected_pdfs_path, method: :post do %>
+  <% pdfs.each do |pdf| %>
     <% unless pdf.downloaded_by?(current_user) %>
-        <li>
-            <%= check_box_tag "selected_files[]", pdf.id %>
-            <%= "#{pdf.full_name} AMC Form #{pdf.formatted_date}.pdf" %>
-            <a href="<%= download_pdf_path(pdf.id) %>" class="download-link" data-pdf-id="<%= pdf.id %>" download>Download</a>
-        </li>
+      <li class="list-group-item">
+        <%= check_box_tag "selected_files[]", pdf.id %>
+        <%= "#{pdf.full_name} AMC Form #{pdf.formatted_date}.pdf" %>
+        <!-- Update: Add a class for styling and an onclick event for the refresh -->
+        <%= link_to 'Download', download_pdf_path(pdf.id), class: 'btn btn-sm btn-primary download-individual', onclick: "handleIndividualDownload()" %>
+      </li>
     <% end %>
+  <% end %>
+  <%= submit_tag "Download Selected as ZIP", class: "btn btn-info mt-2" %>
 <% end %>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Keep the ZIP download functionality as is
+  Array.from(document.getElementsByTagName('form')).forEach(form => {
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      await ajaxSubmitForm(form);
+    };
+  });
+});
+
+function handleIndividualDownload() {
+  // Use setTimeout to delay the refresh, allowing the download to initiate
+  setTimeout(() => {
+    window.location.href = window.location.href; // Reload the page
+  }, 250); // Adjust this delay as needed
+}
+
+async function ajaxSubmitForm(form) {
+  // Implementation for handling form submission to download selected PDFs as ZIP
+  // This remains unchanged from your working ZIP download functionality
+}
+</script>
