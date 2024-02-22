@@ -1,11 +1,16 @@
 <%= form_tag download_selected_pdfs_path, method: :post do %>
+  <%= submit_tag "Download Selected as ZIP", class: "btn btn-info mt-2" %>
   <% pdfs.each do |pdf| %>
     <% unless pdf.downloaded_by?(current_user) %>
       <li class="list-group-item">
-        <%= check_box_tag "selected_files[]", pdf.id %>
-        <%= "#{pdf.full_name} AMC Form #{pdf.formatted_date}.pdf" %>
-        <!-- Update: Add a class for styling and an onclick event for the refresh -->
-        <%= link_to 'Download', download_pdf_path(pdf.id), class: 'btn btn-sm btn-primary download-individual', onclick: "handleIndividualDownload()" %>
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <%= check_box_tag "selected_files[]", pdf.id %>
+            <%= "#{pdf.full_name} AMC Form #{pdf.formatted_date}.pdf" %>
+          </div>
+          <div>
+            <%= link_to 'Download', download_pdf_path(pdf.id), class: 'btn btn-sm btn-primary download-individual', onclick: "handleIndividualDownload()" %>
+          </div>
       </li>
     <% end %>
   <% end %>
