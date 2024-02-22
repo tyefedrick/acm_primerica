@@ -1,9 +1,26 @@
+ <!--This script src and link href are what makes select2 work.-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
+
 <div class="container mt-4">
   <h1 class="mb-4">RVPs</h1>
-  <ul class="list-group">
+  <!-- Searchable Dropdown for RVPs -->
+  <div class="form-group">
+    <label for="rvp-search">Search for an RVP:</label>
+    <select class="form-control" id="rvp-search">
+      <option value="">Select an RVP</option>
+      <% @rvps.each do |rvp| %>
+        <option value="<%= rvp.id %>"><%= rvp.first_name %> <%= rvp.last_name %></option>
+      <% end %>
+    </select>
+  </div>
+
+  <br/>
+
+  <ul class="list-group" id="rvp-list">
     <% @rvps.each do |rvp| %>
       <li class="list-group-item d-flex justify-content-between align-items-center">
-        <%= link_to rvp.formatted_name, rvp_path(rvp.id), class: "mr-auto" %>
+        <%= link_to rvp.formatted_name, rvp_path(rvp), class: "mr-auto rvp-name" %>
         <span class="favorite <%= rvp.favorite_by_user?(current_user) ? 'favorited' : '' %>" data-rvp-id="<%= rvp.id %>">
           ☆
         </span>
@@ -43,6 +60,17 @@
         console.error("Error updating favorite status:", error);
     });
   })
+
+  $(document).ready(function() {
+  $('#rvp-search').select2({
+    placeholder: "Search for an RVP",
+    allowClear: true,
+    width: '100%'
+  }).on("select2:select", function(e) {
+    // Navigate to the selected RVP's detail page when an RVP is selected
+    window.location.href = '/rvps/' + e.params.data.id;
+  });
+});
 </script>
 
 <style>
