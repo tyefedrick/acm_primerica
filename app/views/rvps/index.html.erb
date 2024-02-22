@@ -1,6 +1,23 @@
+ <!--This script src and link href are what makes select2 work.-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
 <div class="container rvp-list-content ">
 
-    <h1>Active RVPs</h1>
+  <h1>Active RVPs</h1>
+
+  <div class="container mt-4">
+    <!-- Searchable Dropdown for RVPs -->
+  <div class="form-group">
+    <label for="rvp-search">Search for an RVP:</label>
+    <select class="form-control" id="rvp-search">
+      <option value="">Select an RVP</option>
+      <% @rvps.each do |rvp| %>
+        <option value="<%= rvp.id %>"><%= rvp.first_name %> <%= rvp.last_name %></option>
+      <% end %>
+    </select>
+  </div>
+
+  <br/>
     <!-- Button styled with Bootstrap -->
     <div class="text-center d-flex justify-content-between">
       <div style="width: 100px"></div>
@@ -32,6 +49,20 @@
       <%= link_to "Archived RVPs", archived_rvps_path	, class: "btn btn-outline-secondary mb-4" %> 
     </div>
 </div>
+
+<script>
+  $(document).ready(function() {
+  $('#rvp-search').select2({
+    placeholder: "Search for an RVP",
+    allowClear: true,
+    width: '100%'
+  }).on("select2:select", function(e) {
+    // Navigate to the selected RVP's detail page when an RVP is selected
+    window.location.href = '/rvps/' + e.params.data.id;
+  });
+});
+</script>
+
 
 <style>
 /* Additional custom styles */
