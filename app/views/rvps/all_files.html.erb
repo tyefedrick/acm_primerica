@@ -10,7 +10,7 @@
     <select class="form-control" id="rvp-search">
       <option value="">Select an RVP</option>
       <% @rvps.each do |rvp| %>
-        <option value="<%= rvp.id %>"><%= rvp.first_name %> <%= rvp.last_name %></option>
+        <option value="<%= rvp.id %>"><%= rvp.first_name %> <%= rvp.last_name %> - <%= rvp.solution_number %> </option>
       <% end %>
     </select>
   </div>
