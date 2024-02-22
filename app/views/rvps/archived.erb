@@ -1,6 +1,25 @@
+<!--This script src and link href are what makes select2 work.-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
+
 <div class="container rvp-list-content ">
 
     <h1>Archived RVPs</h1>
+    <!-- Searchable Dropdown for Archived RVPs -->
+    <div class="form-group">
+        <label for="archived-rvp-search">Search for an Archived RVP:</label>
+        <select class="form-control" id="archived-rvp-search">
+            <option value="">Select an Archived RVP</option>
+            <% if @archived_rvps.present? %>
+                <% @archived_rvps.each do |rvp| %>
+                <option value="<%= rvp.id %>"><%= "#{rvp.first_name} #{rvp.last_name}" %></option>
+            <% end %>
+            <% else %>
+            <option disabled>No archived RVPs available</option>
+            <% end %>
+        </select>
+    </div>
+
     <!-- Button styled with Bootstrap -->
     <div class="text-center d-flex justify-content-between">
       <div style="width: 100px"></div>
@@ -30,6 +49,27 @@
       <%= link_to "RVP List", rvps_path	, class: "btn btn-outline-secondary mb-4" %> 
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+  $('#archived-rvp-search').select2({
+    placeholder: "Search for an Archived RVP",
+    allowClear: true,
+    width: '100%'
+  }).on("select2:select", function(e) {
+    window.location.href = '/rvps/' + e.params.data.id; // Adjust if needed
+  });
+
+  // Initialize select2 for active RVPs if present
+  $('#rvp-search').select2({
+    placeholder: "Search for an RVP",
+    allowClear: true,
+    width: '100%'
+  }).on("select2:select", function(e) {
+    window.location.href = '/rvps/' + e.params.data.id; // Adjust if needed
+  });
+});
+</script>
 
 <style>
 /* Additional custom styles */

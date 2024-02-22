@@ -74,6 +74,10 @@ class RvpsController < ApplicationController
     @rvps = Rvp.archived.sort_by { |rvp| [rvp.favorite_by_user?(current_user) ? "0" : "1", rvp.first_name] }
     puts @rvps.inspect  # Debugging line to print @rvps to console
     #@sorted_rvps = fetch_all_rvps.sort_by { |rvp| rvp.first_name } 
+    # Assuming there's a scope `archived` in your Rvp model that fetches archived RVPs
+    @archived_rvps = Rvp.archived
+    # If you don't have a scope, but an `archived` boolean field, you might do:
+    # @archived_rvps = Rvp.where(archived: true)
   end
 
   def unarchive

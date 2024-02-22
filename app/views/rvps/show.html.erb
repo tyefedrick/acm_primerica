@@ -63,7 +63,42 @@
 </style>
 
 <script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Handling Back to RVPs button
   document.getElementById("previousPageButton").addEventListener("click", function() {
     history.back();
   });
+
+  // Handling Archive/Unarchive RVP buttons
+  document.querySelectorAll(".btn-danger, .btn-archive").forEach(button => {
+    button.addEventListener("click", function(event) {
+      event.preventDefault(); // Prevent the form from submitting normally
+
+      const url = this.form.action; // Get the form action
+      const method = this.form.method; // Get the form method
+      const data = new FormData(this.form); // Get the form data
+      const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+      fetch(url, {
+        method: method,
+        body: data,
+        headers: {
+          'X-CSRF-Token': token
+        },
+        credentials: 'include'
+      }).then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+        return response.text();
+      }).then(() => {
+        alert('RVP status updated successfully.');
+        window.location.reload(); // Reload to reflect changes
+      }).catch(error => {
+        console.error('Error:', error);
+        alert('Failed to update RVP status.');
+      });
+    });
+  });
+});
 </script>
