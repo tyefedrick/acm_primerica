@@ -268,5 +268,8 @@ $(document).ready(function() {
     allowClear: false,
     // You can add more options here as needed
   });
+  // Set today's date as the default value for the "Today's Date" input
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('todaysDate').value = today;
 });
 </script>
