@@ -181,13 +181,13 @@
 .specific-page .navbar,
 .specific-page #pdf-content,
 .specific-page .border-lines {
-  min-width: 1200px;
+  min-width: 1366px;
   margin: 0 auto;
   overflow-x: auto;
 }
 
 .specific-page .navbar {
-  min-width: 1200px;
+  min-width: 1366px;
   margin: auto;
   border-top: 1px solid rgba(0,0,0,.15);
   border-bottom: 1px solid rgba(0,0,0,.15);
@@ -232,8 +232,8 @@ document.getElementById('download').addEventListener('click', () => {
     }
 
     document.getElementById('download').style.visibility = 'hidden';
-
-    html2canvas(content, { scale: window.devicePixelRatio }).then(canvas => {
+    // While scale: window.devicePixelRatio generates great image fidelity. The file size is too large. Use a lower scale when possible
+    html2canvas(content, { scale: .5 }).then(canvas => {
         const imgWidth = 210; // A4 width in mm
         const imgHeight = canvas.height * imgWidth / canvas.width;
         const imgData = canvas.toDataURL('image/png');
