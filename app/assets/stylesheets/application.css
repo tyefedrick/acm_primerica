@@ -24,3 +24,21 @@
 .cursive-input {
     font-family: 'Dancing Script', cursive;
 }
+
+/*For Pages/index.html.erb*/
+.specific-page .navbar,
+.specific-page #pdf-content,
+.specific-page .border-lines {
+  min-width: 1200px;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.specific-page .navbar {
+  min-width: 1200px;
+  margin: auto;
+  border-top: 1px solid rgba(0,0,0,.15);
+  border-bottom: 1px solid rgba(0,0,0,.15);
+  box-shadow: none; /* Remove box-shadow on specific pages if needed */
+}
+

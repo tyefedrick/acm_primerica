@@ -24,7 +24,7 @@
 
   </head>
 
-  <body class="body_container">
+  <body class="<%= 'specific-page' if controller_name == 'pages' && action_name == 'index' %> body_container">
     <%= yield %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </body>
