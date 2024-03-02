@@ -4,6 +4,16 @@
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h2 class="card-title m-0">RVP Info</h2>
+          
+        
+     <%= button_to "Toggle Proctor", toggle_proctor_rvp_path(@rvp), method: :put, remote: true, class: "btn btn-primary btn-toggle-proctor" %>
+<span id="proctorStatus" class="<%= @rvp.proctor? ? 'text-success' : 'text-danger' %>">
+            <%= @rvp.proctor? ? 'Proctor' : 'Not a Proctor' %>
+          </span>
+
+
+
+
           <span class="<%= @rvp.archived? ? 'text-danger' : 'text-success' %>">
             <%= @rvp.archived? ? 'Archived' : 'Active' %>
           </span>
@@ -101,6 +111,38 @@ document.addEventListener("DOMContentLoaded", function() {
         console.error('Error:', error);
         alert('Failed to update RVP status.');
       });
+    });
+  });
+});
+
+// Handling Toggle Proctor button
+document.querySelectorAll(".btn-toggle-proctor").forEach(button => {
+  button.addEventListener("click", function(event) {
+    event.preventDefault(); // Prevent the form from submitting normally
+
+    const url = this.form.action; // Get the form action
+    const method = this.form.method; // Get the form method
+    const data = new FormData(this.form); // Get the form data
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    fetch(url, {
+      method: method,
+      body: data,
+      headers: {
+        'X-CSRF-Token': token
+      },
+      credentials: 'include'
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok.');
+      }
+      return response.text();
+    }).then(() => {
+      alert('Proctor status toggled successfully.');
+      window.location.reload(); // Reload to reflect changes
+    }).catch(error => {
+      console.error('Error:', error);
+      alert('Failed to toggle proctor status.');
     });
   });
 });

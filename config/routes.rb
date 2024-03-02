@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   # Rvps routes
   get '/rvps', to: 'rvps#index', as: :rvps
   resources :rvps do
+    put 'toggle_proctor', on: :member
     resources :pdfs, only: [:index] # Adjust this according to your routes structure
     post :unarchive
     collection do

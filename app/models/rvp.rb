@@ -1,4 +1,5 @@
 class Rvp < ApplicationRecord
+  enum proctor_status: { not_proctor: 0, proctor: 1 }
   has_many :pdfs
   has_many :favorites
   has_many :users, through: :favorites
@@ -23,5 +24,13 @@ class Rvp < ApplicationRecord
 
   def archived?
     self.archived_at.present?
+  end
+
+  def toggle_proctor_status!
+    if not_proctor?
+      update(proctor_status: :proctor)
+    else
+      update(proctor_status: :not_proctor)
+    end
   end
 end

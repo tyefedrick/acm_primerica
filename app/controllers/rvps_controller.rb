@@ -1,5 +1,6 @@
 class RvpsController < ApplicationController
-  before_action :set_rvp, only: %i[ show edit update destroy unarchive ]
+  before_action :set_rvp, only: %i[ show edit update destroy unarchive toggle_proctor ]
+
 
   # GET /rvps or /rvps.json
   def index
@@ -87,6 +88,16 @@ class RvpsController < ApplicationController
       format.html { redirect_to rvps_url, notice: "Rvp was successfully unarchived." }
       format.json { head :no_content }
     end 
+  end
+
+  def toggle_proctor
+    @rvp = Rvp.find(params[:id])
+    @rvp.toggle_proctor_status!
+    
+    respond_to do |format|
+      format.html { redirect_to @rvp }
+      format.json { head :no_content } # Respond with empty body for AJAX request
+    end
   end
 
   private
