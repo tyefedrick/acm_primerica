@@ -1,0 +1,90 @@
+<!--This script src and link href are what makes select2 work.-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
+
+<!-- app/views/rvps/proctored.html.erb -->
+<div class="container rvp-list-content">
+  <h1>Proctored RVPs</h1>
+  <!-- Searchable Dropdown for Proctored RVPs -->
+  <div class="form-group">
+    <label for="proctored-rvp-search">Search for a Proctored RVP:</label>
+    <select class="form-control" id="proctored-rvp-search">
+      <option value="">Select a Proctored RVP</option>
+      <% if @proctored_rvps.present? %>
+        <% @proctored_rvps.each do |rvp| %>
+        <!-- Ensure rvp.formatted_name is used for consistency -->
+        <option value="<%= rvp.id %>"><%= "#{rvp.first_name} #{rvp.last_name}" %> - <%= rvp.solution_number %></option>
+      <% end %>
+      <% else %>
+        <option disabled>No proctored RVPs available</option>
+      <% end %>
+    </select>
+  </div>
+
+<br/>
+
+<div class="container">   
+    <div class="text-center d-flex justify-content-between">
+        <div style="width: 100px"></div>
+        <%= link_to "RVP List", rvps_path	, class: "btn btn-outline-secondary mb-4" %> 
+    </div>
+</div>
+
+<!-- RVP Cards -->
+<div class="row">
+  <% @proctored_rvps.each do |rvp| %>
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <!-- Display first name and last name without the solution number -->
+          <h5><%= "#{rvp.first_name} #{rvp.last_name}" %></h5>
+          <!-- Display solution number -->
+          <p><strong>Solution Number:</strong> <%= rvp.solution_number %></p>
+          <%= link_to "Show this RVP", rvp_path(rvp), class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="container">   
+    <div class="text-center d-flex justify-content-between">
+        <div style="width: 100px"></div>
+        <%= link_to "RVP List", rvps_path	, class: "btn btn-outline-secondary mb-4" %> 
+    </div>
+</div>
+
+<script>
+  // Initialize select2 for proctored RVPs search dropdown
+  $(document).ready(function() {
+    $('#proctored-rvp-search').select2({
+      placeholder: "Search for a Proctored RVP",
+      allowClear: true,
+      width: '100%'
+    }).on("select2:select", function(e) {
+      window.location.href = '/rvps/' + e.params.data.id;
+    });
+  });
+</script>
+
+<style>
+/* Additional custom styles */
+h1 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.rvp-list-content {
+    min-height: 1250px !important;
+}
+</style>

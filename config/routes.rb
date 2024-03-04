@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   # Some other custom route
   get '/some_other_path', to: 'some_controller#some_action', as: :some_other_path
 
+  get 'rvps/proctored', to: 'rvps#proctored', as: :proctored_rvps
+
   # Rvps routes
   get '/rvps', to: 'rvps#index', as: :rvps
   resources :rvps do

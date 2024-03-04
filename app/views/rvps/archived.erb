@@ -4,53 +4,54 @@
 
 <div class="container rvp-list-content ">
 
-    <h1>Archived RVPs</h1>
-    <!-- Searchable Dropdown for Archived RVPs -->
-    <div class="form-group">
-        <label for="archived-rvp-search">Search for an Archived RVP:</label>
-        <select class="form-control" id="archived-rvp-search">
-            <option value="">Select an Archived RVP</option>
-            <% if @archived_rvps.present? %>
-                <% @archived_rvps.each do |rvp| %>
-                <option value="<%= rvp.id %>"><%= "#{rvp.first_name} #{rvp.last_name}" %> - <%= rvp.solution_number %></option>
-            <% end %>
-            <% else %>
-            <option disabled>No archived RVPs available</option>
-            <% end %>
-        </select>
-    </div>
+  <h1>Archived RVPs</h1>
+  <!-- Searchable Dropdown for Archived RVPs -->
+  <div class="form-group">
+    <label for="archived-rvp-search">Search for an Archived RVP:</label>
+    <select class="form-control" id="archived-rvp-search">
+      <option value="">Select an Archived RVP</option>
+        <% if @archived_rvps.present? %>
+          <% @archived_rvps.each do |rvp| %>
+          <option value="<%= rvp.id %>"><%= "#{rvp.first_name} #{rvp.last_name}" %> - <%= rvp.solution_number %></option>
+        <% end %>
+        <% else %>
+          <option disabled>No archived RVPs available</option>
+        <% end %>
+    </select>
+  </div>
 
-    <br/>
+  <br/>
 
-    <!-- Button styled with Bootstrap -->
+  <div class="container">   
     <div class="text-center d-flex justify-content-between">
-      <div style="width: 100px"></div>
-      <%= link_to "RVP List", rvps_path	, class: "btn btn-outline-secondary mb-4" %> 
+    <div style="width: 100px"></div>
+    <%= link_to "RVP List", rvps_path	, class: "btn btn-outline-secondary mb-4" %> 
     </div>
-    <!-- Loop through RVPs -->
-    <div id="rvps" class="row">
-      <% @rvps.each do |rvp| %>
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            <div class="card-body">
-              <!-- RVP content goes here -->
-              <%= render rvp %>
-              <!-- Show RVP link styled with Bootstrap -->
-              <p class="text-center mt-3">
-                <%= link_to "Show this RVP", rvp, class: "btn btn-primary" %>
-              </p>
-            </div>
+  </div>
+
+  <!-- RVP Cards -->
+  <div class="row">
+    <% @rvps.each do |rvp| %>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <!-- Display first name and last name together -->
+            <h5><%= "#{rvp.first_name} #{rvp.last_name}" %></h5>
+            <!-- Display solution number below -->
+            <p><strong>Solution Number:</strong> <%= rvp.solution_number %></p>
+            <%= link_to "Show this RVP", rvp_path(rvp), class: "btn btn-primary" %>
           </div>
         </div>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
+  </div>
 
-    <!-- Another New RVP button styled with Bootstrap -->
+  <div class="container">   
     <div class="text-center d-flex justify-content-between">
       <div style="width: 100px"></div>
       <%= link_to "RVP List", rvps_path	, class: "btn btn-outline-secondary mb-4" %> 
     </div>
-</div>
+  </div>
 
 <script>
 $(document).ready(function() {

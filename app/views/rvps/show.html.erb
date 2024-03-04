@@ -6,21 +6,20 @@
           <h2 class="card-title m-0">RVP Info</h2>
           
         
-     <%= button_to "Toggle Proctor", toggle_proctor_rvp_path(@rvp), method: :put, remote: true, class: "btn btn-primary btn-toggle-proctor" %>
-<span id="proctorStatus" class="<%= @rvp.proctor? ? 'text-success' : 'text-danger' %>">
+          <%= button_to "Toggle Proctor", toggle_proctor_rvp_path(@rvp), method: :put, remote: true, class: "btn btn-primary btn-toggle-proctor" %>
+          <span id="proctorStatus" class="<%= @rvp.proctor? ? 'text-success' : 'text-danger' %>">
             <%= @rvp.proctor? ? 'Proctor' : 'Not a Proctor' %>
           </span>
-
-
-
 
           <span class="<%= @rvp.archived? ? 'text-danger' : 'text-success' %>">
             <%= @rvp.archived? ? 'Archived' : 'Active' %>
           </span>
         </div>
+
         <div class="card-body">
           <%= render @rvp %>
         </div>
+
         <div class="card-footer">
           <div class="row justify-content-between">
             <div class="col-md-auto">
@@ -41,6 +40,7 @@
       </div>
     </div>
   </div>
+  
   <div class="row mt-4">
     <div class="col-md-6">
       <div class="card">

@@ -1,12 +1,12 @@
- <!--This script src and link href are what makes select2 work.-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
-<div class="container rvp-list-content ">
+<!--This script src and link href are what makes select2 work.-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
 
+<div class="container rvp-list-content ">
   <h1>Active RVPs</h1>
 
   <div class="container mt-4">
-    <!-- Searchable Dropdown for RVPs -->
+  <!-- Searchable Dropdown for RVPs -->
   <div class="form-group">
     <label for="rvp-search">Search for an RVP:</label>
     <select class="form-control" id="rvp-search">
@@ -18,36 +18,60 @@
   </div>
 
   <br/>
-    <!-- Button styled with Bootstrap -->
-    <div class="text-center d-flex justify-content-between">
-      <div style="width: 100px"></div>
-      <%= link_to "New RVP", new_rvp_path, class: "btn btn-primary mb-4" %>
-      <%= link_to "Archived RVPs", archived_rvps_path		, class: "btn btn-outline-secondary mb-4" %> 
+
+  <div class="container">
+    <div class="row justify-content-between align-items-center">
+      <!-- Left-aligned button for Proctored RVPs -->
+      <div class="col-auto">
+        <%= link_to "Proctored RVPs", proctored_rvps_path, class: "btn btn-outline-secondary mb-4" %>
+      </div>
+
+      <!-- Centered button for New RVP -->
+      <div class="col d-flex justify-content-center">
+        <%= link_to "New RVP", new_rvp_path, class: "btn btn-primary mb-4" %>
+      </div>
+
+      <!-- Right-aligned button for Archived RVPs -->
+      <div class="col-auto">
+        <%= link_to "Archived RVPs", archived_rvps_path, class: "btn btn-outline-secondary mb-4" %> 
+      </div>
     </div>
-    <!-- Loop through RVPs -->
-    <div id="rvps" class="row">
-      <% @rvps.each do |rvp| %>
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            <div class="card-body">
-              <!-- RVP content goes here -->
-              <%= render rvp %>
-              <!-- Show RVP link styled with Bootstrap -->
-              <p class="text-center mt-3">
-                <%= link_to "Show this RVP", rvp, class: "btn btn-primary" %>
-              </p>
-            </div>
+  </div>
+
+  <!-- RVP Cards -->
+  <div class="row">
+    <% @rvps.each do |rvp| %>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <!-- Display first name and last name together -->
+            <h5><%= "#{rvp.first_name} #{rvp.last_name}" %></h5>
+            <!-- Display solution number below -->
+            <p><strong>Solution Number:</strong> <%= rvp.solution_number %></p>
+            <%= link_to "Show this RVP", rvp_path(rvp), class: "btn btn-primary" %>
           </div>
         </div>
-      <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="container">
+    <div class="row justify-content-between align-items-center">
+    <!-- Left-aligned button for Proctored RVPs -->
+    <div class="col-auto">
+      <%= link_to "Proctored RVPs", proctored_rvps_path, class: "btn btn-outline-secondary mb-4" %>
     </div>
 
-    <!-- Another New RVP button styled with Bootstrap -->
-    <div class="text-center d-flex justify-content-between">
-      <div style="width: 100px"></div>
+    <!-- Centered button for New RVP -->
+    <div class="col d-flex justify-content-center">
       <%= link_to "New RVP", new_rvp_path, class: "btn btn-primary mb-4" %>
-      <%= link_to "Archived RVPs", archived_rvps_path	, class: "btn btn-outline-secondary mb-4" %> 
     </div>
+
+    <!-- Right-aligned button for Archived RVPs -->
+    <div class="col-auto">
+      <%= link_to "Archived RVPs", archived_rvps_path, class: "btn btn-outline-secondary mb-4" %> 
+    </div>
+  </div>
 </div>
 
 <script>

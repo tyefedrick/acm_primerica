@@ -1,6 +1,6 @@
 class RvpsController < ApplicationController
   before_action :set_rvp, only: %i[ show edit update destroy unarchive toggle_proctor ]
-
+  skip_before_action :set_rvp, only: [:proctored]
 
   # GET /rvps or /rvps.json
   def index
@@ -100,6 +100,15 @@ class RvpsController < ApplicationController
     end
   end
 
+  def proctored
+    @proctored_rvps = Rvp.where(proctor_status: :proctor).order(:first_name)
+    
+  end
+
+  def formatted_name
+    "#{first_name} #{last_name} - #{solution_number}"
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_rvp
