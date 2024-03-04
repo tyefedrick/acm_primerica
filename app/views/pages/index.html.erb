@@ -93,7 +93,14 @@
     </div>
 
     <div class="col">
-      <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="ACM Proctor's Name">
+      <div class="form-group">
+        <select class="form-control" id="proctored-rvp-search" name="proctored_rvp">
+          <option value="">Select a Proctored RVP</option>
+          <% Rvp.proctor.order(:first_name, :last_name).each do |rvp| %>
+            <option value="<%= rvp.id %>"><%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %></option>
+          <% end %>
+        </select>
+      </div>
       <p>ACM Proctor's Name</p> 
       <input type="date" class="form-control" id="exampleFormControlInput1" placeholder="Date of ACM Completion">
       <p>Date of ACM Completion</p> 
@@ -174,7 +181,6 @@
 </div>
 
 </div>
-</body>
 
 <style>
 /* pages.css or application.css */
@@ -290,5 +296,18 @@ $(document).ready(function() {
   // Set today's date as the default value for the "Today's Date" input
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('todaysDate').value = today;
+});
+
+  // Initialize select2 for proctored RVPs search dropdown
+$(document).ready(function() {
+  $('#proctored-rvp-search').select2().on('select2:select', function(e) {
+    // Assuming you have an input field to display the selected proctor's name
+    var selectedOption = $("#proctored-rvp-search option:selected").text();
+    $('#selected-rvp-name').val(selectedOption);
+  });
+
+  $('#proctored-rvp-search').on('select2:clear', function() {
+    $('#selected-rvp-name').val(''); // Clear the input box when the selection is cleared
+  });
 });
 </script>
