@@ -25,4 +25,23 @@
     font-family: 'Dancing Script', cursive;
 }
 
+.page-wrapper *{
+    min-width: 1400px !important;
+}
 
+@media (min-width: 1px) {
+    .container {
+        min-width: 1400px !important; 
+        max-width: 1400px !important;
+    } 
+}
+
+.acm-form-box p{
+    text-wrap: none;
+    white-space: nowrap;
+}
+
+.custom_container > p{
+    text-wrap: none;
+    white-space: nowrap;
+}

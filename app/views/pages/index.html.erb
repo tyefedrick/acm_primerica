@@ -7,6 +7,7 @@
 
   <meta name="csrf-token" content="<%= form_authenticity_token %>">
 </head>
+
 <body>
 
 <div id="pdf-content">
@@ -16,7 +17,7 @@
     </h1>
 </div>
 
-<div class="container text-center">
+<div class="custom_container text-center">
   <div class="row">
 
     <div class="col">
@@ -50,7 +51,7 @@
   </div>
 </div>
 
-<div class="container text-center">
+<div class="custom_container text-center">
   <div class=" acm-form-box box p-4 rounded border border-primary text-center">
     <h2>Annual Compliance Meeting <%= Time.now.year %> (Life)</h2>
     <p>I have reviewed and understand the compliance rules and regulations noted in the Annual Compliance Meeting presentation, have completed the Annual Compliance Section of the Program, and have reviewed the Representations for Primerica Representatives published with the Workbook on POL. Any representation that I cannot make is noted on the Disclosure and/or Discrepancies form on the back of this page with a brief explanation. – Use the lines at the bottom of the form and/or a separate sheet.</p>
@@ -62,7 +63,7 @@
   </div>
 </div>
 
-<div class="container">
+<div class="custom_container">
   <p>
     By signing below, I certify that I have personally attended and correctly completed the <%= Time.now.year %> Annual Compliance Meeting, as required by the licenses I hold or the products I sell. My signature makes me accountable for compliance with the law and with Primerica ethics and compliance policies. I will use due diligence to ensure that my business conduct, the conduct of those I supervise, and the business conduct of my associates, is in compliance with the law and with Primerica policy.
   </p>
@@ -80,19 +81,19 @@
   </p>
 </div>
 
-<div class="container text-center">
+<div class="custom_container text-center">
   <div class="row">
 
-    <div class="col">
+    <div class="d-flex flex-column col-md-6 justify-content-start ">
       <input type="text" class="form-control cursive-input" id="repSignature" placeholder="John Doe" required>
-      <p>Rep's E-Signature</p>
+      <label>Rep's E-Signature</label>
       <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Rep's Name">
-      <p>Rep's Printed Name (as signed)</p>
+      <label>Rep's Printed Name (as signed)</label>
       <input type="date" class="form-control" id="todaysDate" placeholder="Today's Date">
-      <p>Today's Date</p> 
+      <label>Today's Date</label> 
     </div>
 
-    <div class="col">
+    <div class="d-flex flex-column col-md-6 justify-content-start">
       <div class="form-group">
         <select class="form-control" id="proctored-rvp-search" name="proctored_rvp">
           <option value="">Select a Proctored RVP</option>
@@ -101,9 +102,9 @@
           <% end %>
         </select>
       </div>
-      <p>ACM Proctor's Name</p> 
+      <label>ACM Proctor's Name</label> 
       <input type="date" class="form-control" id="exampleFormControlInput1" placeholder="Date of ACM Completion">
-      <p>Date of ACM Completion</p> 
+      <label>Date of ACM Completion</label> 
     </div>
 
     <div class="text-center">
@@ -111,7 +112,7 @@
       </h5>
     </div>
 
-    <div class="container">
+    <div class="custom_container">
       <p>Use this form to explain Representation(s) as outlined in the respective section of the <%= Time.now.year %> Workbook (published on POL) for products which you are authorized to represent and that you do not meet in the year <%= Time.now.year %> or that you do not agree to meet. Be sure to provide any available supporting documents, which may include, but not be limited to, court orders, written procedures, authorizations, lists of individuals involved, addresses and phone numbers for individuals involved. If you report disclosures or discrepancies on this form, you must provide your RVP with a copy. Call the Compliance Help Desk at 1-800-243-8901 with any questions regarding discrepancies/disclosures.
       </p>
       <p>
@@ -200,6 +201,10 @@
   box-shadow: 0 3px 4px -1px rgba(0,0,0,.25);
 }
 
+.page-wrapper{
+  min-width: 1200px;
+}
+
 .form-submit-button{
   margin-top: 15px;
 }
@@ -214,6 +219,19 @@
 .form-control{
   height: 30px !important;
   border-color: #999;
+}
+
+p{
+  text-wrap: none;
+  max-width: 1400px;
+  min-width: 1300px;
+  width: 100%;
+}
+
+.custom_container{
+  max-width: 1400px;
+  min-width: 1400px;
+  margin: auto;
 }
 </style>
 
