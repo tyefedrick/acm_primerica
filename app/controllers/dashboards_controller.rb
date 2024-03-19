@@ -18,7 +18,10 @@ class DashboardsController < ApplicationController
       bypass_sign_in(@user) # Sign the user in again to reflect the password change
       redirect_to dashboard_path, notice: "Password successfully updated."
     else
+       # Only show alert for password change errors
+    if params[:user][:password].present? && params[:user][:password_confirmation].present?
       flash.now[:alert] = "Error updating password. Please check your current password and try again."
+    end
       #command to show the error to the user
       render :show
     end
