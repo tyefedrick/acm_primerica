@@ -124,4 +124,10 @@ class PdfsController < ApplicationController
         redirect_to file_not_found_path
     end
   end
+
+  def delete_old_pdfs
+    Pdf.where('uploaded_at <= ?', 2.years.ago).destroy_all
+    redirect_to all_files_path, notice: 'Old PDFs have been deleted successfully.'
+  end
+  
 end

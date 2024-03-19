@@ -47,6 +47,10 @@ gem 'cancancan'
 gem 'letter_opener', group: :development
 gem 'rubyzip', require: 'zip'
 gem 'select2-rails'
+gem 'sidekiq'
+gem 'sidekiq-cron'
+gem 'mock_redis', group: :test
+
 
 
 # Use Sass to process CSS
