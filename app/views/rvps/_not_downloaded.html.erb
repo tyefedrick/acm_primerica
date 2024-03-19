@@ -1,24 +1,46 @@
 <%= form_tag download_selected_pdfs_path, method: :post do %>
-  <%= submit_tag "Download Selected as ZIP", class: "btn btn-info mt-2" %>
+  <div class="row">
+    <div class="col">
+      <div class="btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-primary">
+          <%= check_box_tag "select_all_not_downloaded", 0, false, id: "select-all-checkbox-not-downloaded" %>
+          Select All
+        </label>
+      </div>
+    </div>
+    <div class="col-auto">
+      <%= submit_tag "Download Selected as ZIP", class: "btn btn-info" %>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col"><!-- Empty column to create space --></div>
+  </div>
   <% pdfs.each do |pdf| %>
     <% unless pdf.downloaded_by?(current_user) %>
       <li class="list-group-item">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <%= check_box_tag "selected_files[]", pdf.id %>
+            <%= check_box_tag "selected_files[]", pdf.id, false, class: "pdf-checkbox-not-downloaded" %>
             <%= "#{pdf.full_name} AMC Form #{pdf.formatted_date}.pdf" %>
           </div>
           <div>
             <%= link_to 'Download', download_pdf_path(pdf.id), class: 'btn btn-sm btn-primary download-individual', onclick: "handleIndividualDownload()" %>
           </div>
+        </div>
       </li>
     <% end %>
   <% end %>
-  <%= submit_tag "Download Selected as ZIP", class: "btn btn-info mt-2" %>
 <% end %>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById('select-all-checkbox-not-downloaded').addEventListener('change', function() {
+    const checkboxes = document.querySelectorAll('.pdf-checkbox-not-downloaded');
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = this.checked;
+    });
+  });
+
   // Keep the ZIP download functionality as is
   Array.from(document.getElementsByTagName('form')).forEach(form => {
     form.onsubmit = async (e) => {

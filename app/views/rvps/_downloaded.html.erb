@@ -1,10 +1,25 @@
 <%= form_tag download_selected_pdfs_path, method: :post do %>
-  <%= submit_tag "Download Selected as ZIP", class: "btn btn-info mt-2" %>
+  <div class="row">
+    <div class="col">
+      <div class="btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-primary">
+          <%= check_box_tag "select_all_downloaded", 0, false, id: "select-all-checkbox-downloaded" %>
+          Select All
+        </label>
+      </div>
+    </div>
+    <div class="col-auto">
+      <%= submit_tag "Download Selected as ZIP", class: "btn btn-info" %>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col"><!-- Empty column to create space --></div>
+  </div>
   <% @pdfs.select { |pdf| pdf.downloaded_by?(current_user) }.each do |pdf| %>
     <li class="list-group-item">
       <div class="d-flex justify-content-between align-items-center">
         <div>
-          <%= check_box_tag "selected_files[]", pdf.id %>
+          <%= check_box_tag "selected_files[]", pdf.id, false, class: "pdf-checkbox-downloaded" %>
           <%= "#{pdf.full_name} AMC Form #{pdf.formatted_date}.pdf" %>
         </div>
         <div>
@@ -13,11 +28,20 @@
       </div>
     </li>
   <% end %>
-  <%= submit_tag "Download Selected as ZIP", class: "btn btn-info mt-2" %>
 <% end %>
+
+
+
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById('select-all-checkbox-downloaded').addEventListener('change', function() {
+    const checkboxes = document.querySelectorAll('.pdf-checkbox-downloaded');
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = this.checked;
+    });
+  });
+
   Array.from(document.getElementsByTagName('form')).forEach(form => {
     form.onsubmit = async (e) => {
       e.preventDefault();
@@ -51,12 +75,9 @@ async function ajaxSubmitForm(form) {
 
         initiateDownload(downloadUrl);
 
-        // Delay to ensure download has initiated
-        //await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 5 seconds
+        URL.revokeObjectURL(downloadUrl);
 
-        URL.revokeObjectURL(downloadUrl); // Free up resources by revoking the Blob URL
-
-        window.location.reload(); // Refresh the page after the download has (hopefully) initiated
+        window.location.reload();
       } else {
         console.error('Expected a ZIP file, but the content type is:', contentType);
       }
