@@ -1,41 +1,37 @@
 <!--If you want to link your css or scss use the stylesheet link tag-->
 <%= stylesheet_link_tag('nav_bar') %>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container">
+<nav class="custom-navbar">
+  <div class="custom-container">
     <a class="navbar-brand" href="<%= root_path %>">
       <span class="navbar-red">A</span>
       <span class="navbar-white">C</span>
       <span class="navbar-blue">M</span>
     </a>
 
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mr-auto">
-        <% if user_signed_in? %> 
-          <li class="nav-item">
-            <%= link_to dashboard_path, class: 'nav-link' do %>
-              Dashboard
-            <% end %>
-          </li>
-          <li class="nav-item">
-            <%= link_to rvps_path, class: 'nav-link' do %>
-              RVP Database
-            <% end %>
-          </li>
-          <li class="nav-item">
-            <%= link_to all_rvp_files_path, class: 'nav-link' do %>
-              RVP List
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+    <ul class="navbar-nav">
+      <% if user_signed_in? %> 
+        <li class="nav-item">
+          <%= link_to dashboard_path, class: 'nav-link' do %>
+            Dashboard
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= link_to rvps_path, class: 'nav-link' do %>
+            RVP Database
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= link_to all_rvp_files_path, class: 'nav-link' do %>
+            RVP List
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
 
-    <div>
+    <div class="auth-buttons">
       <% if user_signed_in? %>
-        <div>
-          <%= button_to "logout", destroy_user_session_path, method: :delete, class: 'btn btn-danger', onclick: "return confirmLogout();" %>
-        </div>
+        <%= button_to "logout", destroy_user_session_path, method: :delete, class: 'btn btn-danger', onclick: "return confirmLogout();" %>
       <% else %>
         <%= link_to "Login", new_user_session_path, class: 'btn btn-primary' %>
       <% end %>
