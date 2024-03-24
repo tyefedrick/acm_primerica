@@ -8,10 +8,24 @@
         </label>
       </div>
     </div>
+
+    <!-- Year Sorter Dropdown with a custom class for CSS styling -->
+    <div class="col-auto year-dropdown-container">
+      <select class="form-control" id="yearSorter" onchange="filterByYear()">
+        <option value="">Select Year</option>
+        <% pdf_years = @pdfs.map { |pdf| pdf.formatted_date.year }.uniq.sort %>
+        <% pdf_years.each do |year| %>
+          <option value="<%= year %>"><%= year %></option>
+        <% end %>
+      </select>
+    </div>
+
     <div class="col-auto">
       <%= submit_tag "Download Selected as ZIP", class: "btn btn-info" %>
     </div>
   </div>
+
+  
   <div class="row mt-3">
     <div class="col"><!-- Empty column to create space --></div>
   </div>
@@ -61,4 +75,27 @@ async function ajaxSubmitForm(form) {
   // Implementation for handling form submission to download selected PDFs as ZIP
   // This remains unchanged from your working ZIP download functionality
 }
+
+function filterByYear() {
+  var selectedYear = document.getElementById('yearSorter').value;
+  var pdfItems = document.querySelectorAll('.list-group-item');
+
+  pdfItems.forEach(function(item) {
+    var pdfYear = item.textContent.match(/\b\d{4}\b/); // Extract the year from the text content
+    if (pdfYear) {
+      if (selectedYear === '' || pdfYear.includes(selectedYear)) {
+        item.style.display = ''; // Show item
+      } else {
+        item.style.display = 'none'; // Hide item
+      }
+    }
+  });
+}
 </script>
+
+<style>
+/* CSS for Year Dropdown Container */
+.year-dropdown-container {
+  margin-right: 40px; /* Adjust the value as needed */
+}
+</style>
