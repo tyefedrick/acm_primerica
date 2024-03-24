@@ -84,13 +84,13 @@
 <div class="custom_container text-center">
   <div class="row">
 
-    <div class="d-flex flex-column col-md-6 justify-content-start ">
-      <input type="text" class="form-control cursive-input" id="repSignature" placeholder="John Doe" required>
-      <label>Rep's E-Signature</label>
-      <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Rep's Name">
-      <label>Rep's Printed Name (as signed)</label>
-      <input type="date" class="form-control" id="todaysDate" placeholder="Today's Date">
-      <label>Today's Date</label> 
+   <div class="d-flex flex-column col-md-6 justify-content-start">
+      <input type="text" class="form-control cursive-input" id="repSignature" placeholder="John Doe" oninput="copyName('signature')" required>
+      <label for="repSignature">Rep's E-Signature</label>
+      <input type="text" class="form-control" id="repPrintedName" placeholder="Rep's Name" oninput="copyName('printed')" required>
+      <label for="repPrintedName">Rep's Printed Name (as signed)</label>
+      <input type="date" class="form-control" id="todaysDate">
+      <label for="todaysDate">Today's Date</label> 
     </div>
 
     <div class="d-flex flex-column col-md-6 justify-content-start">
@@ -328,4 +328,16 @@ $(document).ready(function() {
     $('#selected-rvp-name').val(''); // Clear the input box when the selection is cleared
   });
 });
+
+function copyName(source) {
+  // Determine which field to copy from and to
+  var signatureField = document.getElementById('repSignature');
+  var printedNameField = document.getElementById('repPrintedName');
+  
+  if (source === 'signature') {
+    printedNameField.value = signatureField.value;
+  } else if (source === 'printed') {
+    signatureField.value = printedNameField.value;
+  }
+}
 </script>
