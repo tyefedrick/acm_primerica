@@ -45,3 +45,17 @@
     text-wrap: none;
     white-space: nowrap;
 }
+
+@media (max-width: 1199px) {
+    .custom_container {
+      overflow-x: auto; /* Allows scrolling on small screens */
+    }
+}
+
+.first-column {
+    margin-right: 150px !important; /* or any other value that suits your design */
+}
+  
+.second-column {
+    margin-left: 150px !important; /* or any other value that suits your design */
+} 

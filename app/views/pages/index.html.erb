@@ -81,31 +81,40 @@
   </p>
 </div>
 
-<div class="custom_container text-center">
-  <div class="row">
+<div class="custom_container d-flex justify-content-center" style="min-width: 1200px; overflow-x: auto;">
+  <!-- Flex container for the entire form content -->
+  <div class="d-flex" style="width: 100%; justify-content: space-between;"> <!-- Removed max-width inline style -->
 
-   <div class="d-flex flex-column col-md-6 justify-content-start">
-      <input type="text" class="form-control cursive-input" id="repSignature" placeholder="John Doe" oninput="copyName('signature')" required>
+    <!-- Flex container for the first column of inputs -->
+    <div class="d-flex flex-column align-items-center first-column" style="width: 48%;"> <!-- Adjusted width to double the original -->
+      <!-- Inputs for E-Signature and Printed Name -->
+      <input type="text" class="form-control cursive-input mb-2" id="repSignature" placeholder="John Doe" oninput="copyName('signature')" required style="max-width: none;">
       <label for="repSignature">Rep's E-Signature</label>
-      <input type="text" class="form-control" id="repPrintedName" placeholder="Rep's Name" oninput="copyName('printed')" required>
+      
+      <input type="text" class="form-control mb-2" id="repPrintedName" placeholder="Rep's Name" oninput="copyName('printed')" required style="max-width: none;">
       <label for="repPrintedName">Rep's Printed Name (as signed)</label>
-      <input type="date" class="form-control" id="todaysDate">
+      
+      <input type="date" class="form-control mb-2" id="todaysDate" style="max-width: none;">
       <label for="todaysDate">Today's Date</label> 
     </div>
 
-    <div class="d-flex flex-column col-md-6 justify-content-start">
-      <div class="form-group">
-        <select class="form-control" id="proctored-rvp-search" name="proctored_rvp">
-          <option value="">Select a Proctored RVP</option>
-          <% Rvp.proctor.order(:first_name, :last_name).each do |rvp| %>
-            <option value="<%= rvp.id %>"><%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %></option>
-          <% end %>
-        </select>
-      </div>
-      <label>ACM Proctor's Name</label> 
-      <input type="date" class="form-control" id="exampleFormControlInput1" placeholder="Date of ACM Completion">
-      <label>Date of ACM Completion</label> 
+    <!-- Flex container for the second column of inputs -->
+    <div class="d-flex flex-column align-items-center second-column" style="width: 48%;"> <!-- Adjusted width to double the original -->
+      <!-- Select for Proctored RVP dropdown -->
+      <select class="form-control mb-2" id="proctored-rvp-search" name="proctored_rvp" style="width: 100% !important;">
+        <option value="">Select a Proctored RVP</option>
+        <% Rvp.proctor.order(:first_name, :last_name).each do |rvp| %>
+          <option value="<%= rvp.id %>"><%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %></option>
+        <% end %>
+      </select>
+      <label for="proctored-rvp-search">ACM Proctor's Name</label>
+      
+      <input type="date" class="form-control mb-2" id="acmCompletionDate" placeholder="Date of ACM Completion" style="max-width: none;">
+      <label for="acmCompletionDate">Date of ACM Completion</label>
     </div>
+
+  </div>
+</div>
 
     <div class="text-center">
       <h5><%= Time.now.year %> ACM DISCLOSURES AND/OR DISCREPANCIES
