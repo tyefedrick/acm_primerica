@@ -1,4 +1,7 @@
 class Rvp < ApplicationRecord
+  validates :first_name, :last_name, :solution_number, presence: true
+  validates :solution_number, uniqueness: { scope: [:first_name, :last_name],
+    message: "should be unique per RVP" }
   enum proctor_status: { not_proctor: 0, proctor: 1 }
   has_many :pdfs
   has_many :favorites
