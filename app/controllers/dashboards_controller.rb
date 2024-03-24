@@ -9,20 +9,16 @@ class DashboardsController < ApplicationController
   
   #as the name suggests this is the actions that controls the changing of the password.
   def change_password
-
-    # @user (person currently logged in), is the current_user, therefore they are able to edit the data.
     @user = current_user
-  
-    #As the user updates the password, they will be logged in again if the password is succesfully changed.
+
     if @user.update_with_password(user_params)
-      bypass_sign_in(@user) # Sign the user in again to reflect the password change
-      redirect_to dashboard_path, notice: "Password successfully updated."
+      bypass_sign_in(@user)
+      # Redirect and set flash notice for success
+      flash[:password_change_success] = "Your password has been successfully updated."
+      redirect_to dashboard_path
     else
-       # Only show alert for password change errors
-    if params[:user][:password].present? && params[:user][:password_confirmation].present?
-      flash.now[:alert] = "Error updating password. Please check your current password and try again."
-    end
-      #command to show the error to the user
+      # Set flash.now alert for errors, will only last for the current request
+      flash.now[:password_change_error] = @user.errors.full_messages.join(', ')
       render :show
     end
   end
