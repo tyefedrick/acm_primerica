@@ -18,6 +18,6 @@ class User < ApplicationRecord
 
   def must_be_primerica_email
     domain = email.split('@').last.downcase if email.present?
-    errors.add(:email, 'must be a primerica.com account') unless domain == 'primerica.com'
+    errors.add(:email, 'must be your Primerica email.') unless domain == 'primerica.com'
   end
 end
