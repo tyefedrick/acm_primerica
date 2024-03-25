@@ -245,49 +245,71 @@ p{
 </style>
 
 <script>
-document.getElementById('download').addEventListener('click', () => {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF('portrait', 'mm', 'a4');
-    const content = document.getElementById('pdf-content');
+$(document).ready(function() {
+    // Initialize select2 for RVP search dropdowns right at the beginning
+    initializeSelect2();
 
-    if (!content) {
-        alert('Content not found');
-        return;
-    }
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('todaysDate').value = today;
 
-    const fullName = document.getElementById('fullName').value;
-    const repSignature = document.getElementById('repSignature').value;
-    const selectedRVP = document.getElementById('rvp').value;
+    document.getElementById('download').addEventListener('click', () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('portrait', 'mm', 'a4');
+        const content = document.getElementById('pdf-content');
 
-    if (!repSignature) {
-        alert("Rep's E-Signature is required.");
-        return;
-    }
+        if (!content) {
+            alert('Content not found');
+            return;
+        }
 
-    document.getElementById('download').style.visibility = 'hidden';
-    // While scale: window.devicePixelRatio generates great image fidelity. The file size is too large. Use a lower scale when possible
-    html2canvas(content, { scale: .5 }).then(canvas => {
-        const imgWidth = 210; // A4 width in mm
-        const imgHeight = canvas.height * imgWidth / canvas.width;
-        const imgData = canvas.toDataURL('image/png');
-        doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-        const pdfBlob = doc.output('blob');
+        const fullName = document.getElementById('fullName').value;
+        const repSignature = document.getElementById('repSignature').value;
+        const selectedRVP = document.getElementById('rvp').value;
 
-        // Fetch CSRF token from meta tag
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        if (!repSignature) {
+            alert("Rep's E-Signature is required.");
+            return;
+        }
 
-        // Send the selected RVP, PDF data, full name, and formatted date to your server
-        savePDFToDatabase(selectedRVP, pdfBlob, csrfToken, fullName).then(response => {
-            alert('PDF successfully saved to database.');
-            document.getElementById('download').style.visibility = 'visible';
-        }).catch(error => {
-            console.error('Error saving PDF:', error);
-            alert('Error occurred while saving the PDF.');
+        // Temporarily disable select2 for PDF generation
+        $('#rvp, #proctored-rvp-search').select2('destroy');
+
+        document.getElementById('download').style.visibility = 'hidden';
+        
+        // Capture the content as canvas
+        html2canvas(content, { 
+            scale: 1,
+            windowHeight: content.scrollHeight,
+            windowWidth: content.scrollWidth
+        }).then(canvas => {
+            const imgWidth = 210; // A4 width in mm
+            const imgHeight = canvas.height * imgWidth / canvas.width;
+            const imgData = canvas.toDataURL('image/png');
+            doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+            const pdfBlob = doc.output('blob');
+
+            // Fetch CSRF token from meta tag
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            // Send the selected RVP, PDF data, full name, and formatted date to your server
+            savePDFToDatabase(selectedRVP, pdfBlob, csrfToken, fullName).then(response => {
+                alert('PDF successfully saved to database.');
+                // Re-initialize select2 after PDF generation
+                initializeSelect2();
+            }).catch(error => {
+                console.error('Error saving PDF:', error);
+                alert('Error occurred while saving the PDF.');
+                // Ensure select2 is re-initialized even if there's an error
+                initializeSelect2();
+            }).finally(() => {
+                document.getElementById('download').style.visibility = 'visible';
+            });
+        }).catch(err => {
+            console.error('Error generating canvas:', err);
+            // Ensure select2 is re-initialized if canvas generation fails
+            initializeSelect2();
             document.getElementById('download').style.visibility = 'visible';
         });
-    }).catch(err => {
-        console.error('Error generating canvas:', err);
-        document.getElementById('download').style.visibility = 'visible';
     });
 });
 
@@ -297,12 +319,11 @@ function savePDFToDatabase(rvp, pdfBlob, csrfToken, fullName) {
     formData.append('rvp_id', rvp);
     formData.append('full_name', fullName);
 
-    // Include CSRF token in the request headers
     return fetch('/save-pdf', {
         method: 'POST',
         body: formData,
         headers: {
-            'X-CSRF-Token': csrfToken // Include the CSRF token
+            'X-CSRF-Token': csrfToken
         }
     }).then(response => {
         if (!response.ok) {
@@ -312,41 +333,29 @@ function savePDFToDatabase(rvp, pdfBlob, csrfToken, fullName) {
     });
 }
 
-// rvp_dropdown_search (using select2)
-$(document).ready(function() {
-  $('#rvp').select2({
-    width: '100%',
-    placeholder: 'Select Your RVP',
-    allowClear: false,
-    // You can add more options here as needed
-  });
-  // Set today's date as the default value for the "Today's Date" input
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('todaysDate').value = today;
-});
+function initializeSelect2() {
+    $('#rvp').select2({
+        width: '100%',
+        placeholder: 'Select Your RVP',
+        allowClear: true
+    });
 
-  // Initialize select2 for proctored RVPs search dropdown
-$(document).ready(function() {
-  $('#proctored-rvp-search').select2().on('select2:select', function(e) {
-    // Assuming you have an input field to display the selected proctor's name
-    var selectedOption = $("#proctored-rvp-search option:selected").text();
-    $('#selected-rvp-name').val(selectedOption);
-  });
-
-  $('#proctored-rvp-search').on('select2:clear', function() {
-    $('#selected-rvp-name').val(''); // Clear the input box when the selection is cleared
-  });
-});
+    $('#proctored-rvp-search').select2({
+        width: '100%',
+        placeholder: 'Select a Proctored RVP',
+        allowClear: true
+    });
+}
 
 function copyName(source) {
-  // Determine which field to copy from and to
-  var signatureField = document.getElementById('repSignature');
-  var printedNameField = document.getElementById('repPrintedName');
+    var signatureField = document.getElementById('repSignature');
+    var printedNameField = document.getElementById('repPrintedName');
   
-  if (source === 'signature') {
-    printedNameField.value = signatureField.value;
-  } else if (source === 'printed') {
-    signatureField.value = printedNameField.value;
-  }
+    if (source === 'signature') {
+        printedNameField.value = signatureField.value;
+    } else if (source === 'printed') {
+        signatureField.value = printedNameField.value;
+    }
 }
+
 </script>
