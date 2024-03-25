@@ -122,7 +122,7 @@
     </div>
 
     <div class="custom_container">
-      <p>Use this form to explain Representation(s) as outlined in the respective section of the <%= Time.now.year %> Workbook (published on POL) for products which you are authorized to represent and that you do not meet in the year <%= Time.now.year %> or that you do not agree to meet. Be sure to provide any available supporting documents, which may include, but not be limited to, court orders, written procedures, authorizations, lists of individuals involved, addresses and phone numbers for individuals involved. If you report disclosures or discrepancies on this form, you must provide your RVP with a copy. Call the Compliance Help Desk at 1-800-243-8901 with any questions regarding discrepancies/disclosures.
+      <p>Use this form to explain Representation(s) as outlined in the respective section of the <%= Time.now.year %> Workbook (published on POL) for products which you are authorized to represent and that you do not meet in the year <%= Time.now.year %> or that you do not agree to meet. Be sure to provide any available supporting documents, which may include, but not be limited to, court orders, written procedures, authorizations, lists of individuals involved, addresses and phone numbers for individuals involved. If you report disclosures or discrepancies on this form, you must provide your RVP with a copy. Call the Compliance Help Desk with any questions regarding discrepancies/disclosures.
       </p>
       <p>
       Your signature on the first part of the form certifies the accuracy of the information on this page.
@@ -130,67 +130,63 @@
   </div>
 
 <div class="box p-4 rounded border border-primary text-center">
-    <p>Check the applicable disclosure(s) you are making and follow the additional instructions:</p>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-check">
-            <%= check_box_tag 'home_address_change', '1', false, class: 'form-check-input' %>
-            <%= label_tag 'home_address_change', 'Home address change' %>
-          </div>
-        </div>
+  <p>Check the applicable disclosure(s) you are making and follow the additional instructions:</p>
 
-        <div class="col-md-6">
-          <div class="form-check">
-            <%= check_box_tag 'employment_change', '1', false, class: 'form-check-input' %>
-            <%= label_tag 'employment_change', 'Changes in employment which may constitute a conflict of interest (refer to Conflict of Interest Chart on POL > Compliance > Quick Links > OBA/PST > Chart of Potential Conflicts of Interest)
-            For the item listed directly above, a written explanation of the facts must also be completed and attached.' %>
-          </div>
+  <div style="padding: 10px;"> <!-- Padding for internal spacing -->
+
+    <div class="rounded border mb-3 p-2"> <!-- Rounded border for each disclosure -->
+      <div class="form-check">
+        <%= check_box_tag 'home_address_change', '1', false, class: 'form-check-input' %>
+        <%= label_tag 'home_address_change', 'Home address change', class: 'form-check-label' %>
       </div>
+    </div>
 
-      <br>
-      <br>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-check">
-            <%= check_box_tag 'employment_change_1', '1', false, class: 'form-check-input' %>
-            <%= label_tag 'employment_change_1', 'Bankruptcy, Judgment, or Lien' %>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-check">
-            <%= check_box_tag 'employment_change_2', '1', false, class: 'form-check-input' %>
-            <%= label_tag 'employment_change_2', 'Regulatory Action' %>
-          </div>
-        </div>
+    <div class="rounded border mb-3 p-2">
+      <div class="form-check">
+        <%= check_box_tag 'employment_change', '1', false, class: 'form-check-input' %>
+        <%= label_tag 'employment_change', 'Changes in employment which may constitute a conflict of interest (refer to Conflict of Interest Chart on POL > Compliance > Quick Links > OBA/PST > Chart of Potential Conflicts of Interest). For the item listed directly above, a written explanation of the facts must also be completed and attached.', class: 'form-check-label' %>
       </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-check">
-            <%= check_box_tag 'employment_change_1', '1', false, class: 'form-check-input' %>
-            <%= label_tag 'employment_change_1', 'Civil Suit' %>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-check">
-            <%= check_box_tag 'employment_change_2', '1', false, class: 'form-check-input' %>
-            <%= label_tag 'employment_change_2', 'Misdemeanor or Felony Charge(s) and/or Conviction(s)' %>
-          </div>
-        </div>
+    </div>
+  
+    <div class="rounded border mb-3 p-2"> <!-- Rounded border for each disclosure -->
+      <div class="form-check">
+        <%= check_box_tag 'bankruptcy_judgment_lien', '1', false, class: 'form-check-input' %>
+        <%= label_tag 'bankruptcy_judgment_lien', 'Bankruptcy, Judgement, or Lien', class: 'form-check-label' %>
       </div>
-    <p>For all items listed directly above, you must attach certified copies of the related legal documents, along with a written explanation of the facts.</p>
+    </div>
 
-    <textarea class="form-control" id="exampleFormControlInput1" placeholder="Insert additional details here." rows="9"></textarea>
+    <div class="rounded border mb-3 p-2"> <!-- Rounded border for each disclosure -->
+      <div class="form-check">
+        <%= check_box_tag 'regulatory_action', '1', false, class: 'form-check-input' %>
+        <%= label_tag 'regulatory_action', 'Regulatory Action', class: 'form-check-label' %>
+      </div>
+    </div>
 
+    <div class="rounded border mb-3 p-2"> <!-- Rounded border for each disclosure -->
+      <div class="form-check">
+        <%= check_box_tag 'civil_suit', '1', false, class: 'form-check-input' %>
+        <%= label_tag 'civil_suit', 'Civil Suit', class: 'form-check-label' %>
+      </div>
+    </div> 
+
+    <div class="rounded border mb-3 p-2"> <!-- Rounded border for each disclosure -->
+      <div class="form-check">
+        <%= check_box_tag 'misdemeanor_felony_conviction', '1', false, class: 'form-check-input' %>
+        <%= label_tag 'misdemeanor_felony_conviction', 'Misdemeanor or Felony Charge(s) and/or Conviction(s)', class: 'form-check-label' %>
+      </div>
+    </div> 
+  </div>
+
+  <p>For all items listed directly above, you must provide your RVP with certified copies of the related legal documents, along with a written explanation of the facts in the space provided below.</p>
+
+  <textarea class="form-control" id="exampleFormControlInput1" placeholder="Insert additional details here." rows="9"></textarea>
+
+  <button id="download" class="form-submit-button btn btn-primary">Submit</button>
 
 </div>
 
-<button id="download" class="form-submit-button btn btn-primary">Submit</button>
 
-</div>
 
-</div>
 
 <style>
 /* pages.css or application.css */
