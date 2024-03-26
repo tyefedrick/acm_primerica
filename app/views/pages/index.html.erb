@@ -177,9 +177,11 @@
     </div> 
   </div>
 
-  <p>For all items listed directly above, you must provide your RVP with certified copies of the related legal documents, along with a written explanation <br> of the facts in the space provided below.</p>
+  <p>For all items listed directly above, you must provide your RVP with certified copies of the related legal documents, along with a short explanation <br> of the facts in the space provided below. </p>
 
-  <textarea class="form-control" id="exampleFormControlInput1" placeholder="Insert additional details here." rows="9"></textarea>
+  <div>
+    <textarea class="textarea" id="exampleFormControlInput1" placeholder="Insert additional details here." rows="4"></textarea>
+  </div>
 
   <button id="download" class="form-submit-button btn btn-primary">Submit</button>
 
@@ -227,6 +229,14 @@
   height: 30px !important;
   border-color: #999;
 }
+
+.textarea {
+  height: auto; /* Override any specific height that might be set */
+  resize: none; /* Allows the user to resize the textarea vertically */
+  width: 100%;
+  border-color: #999;
+}
+
 
 p{
   text-wrap: none;
