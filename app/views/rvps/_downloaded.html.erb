@@ -13,7 +13,7 @@
     <div class="col-auto year-dropdown-container">
       <select class="form-control" id="yearSorter" onchange="filterByYear()">
         <option value="">Select Year</option>
-        <% pdf_years = @pdfs.map { |pdf| pdf.formatted_date.year }.uniq.sort %>
+        <% pdf_years = @pdfs.map { |pdf| pdf.formatted_date&.year }.compact.uniq.sort %>
         <% pdf_years.each do |year| %>
           <option value="<%= year %>"><%= year %></option>
         <% end %>
