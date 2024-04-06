@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="sign_up_page container mt-4">
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
@@ -27,7 +27,7 @@
               <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
             </div>
 
-            <div class="actions text-center">
+            <div class="sign_up_button actions text-center">
               <%= f.submit "Sign up", class: "btn btn-primary" %>
             </div>
           <% end %>
@@ -38,3 +38,14 @@
     </div>
   </div>
 </div>
+
+<style>
+.sign_up_page {
+  padding-top: 50px; /* Adjust the value as needed */
+  padding-bottom: 450px; /* Adjust the value as needed */
+}
+
+.sign_up_button{
+  padding-top: 10px; 
+}
+</style>
