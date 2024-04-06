@@ -23,7 +23,7 @@
     <div class="col">
       <div class="form-group">
         <label for="fullName">Full Name</label>
-        <input type="text" class="full-name form-control" id="fullName" placeholder="Full Name">
+        <input type="text" class="full-name form-control" id="fullName" placeholder="Full Name" required>
       </div>
     </div>
 
@@ -33,7 +33,7 @@
       <label for="rvp">Who is your RVP?</label>
       <!-- Single dropdown with search functionality -->
       <% sorted_rvps = Rvp.all.sort_by { |rvp| rvp.first_name } %>
-      <select class="form-control" id="rvp" name="rvp">
+      <select class="form-control" id="rvp" name="rvp" required>
         <option value="">Select Your RVP</option>
         <% sorted_rvps.each do |rvp| %>
           <option value="<%= rvp.id %>"><%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %></option>
@@ -45,7 +45,7 @@
     <div class="col">
       <div class="form-group">
         <label for="solutionNumber">Rep Solution Number</label>
-        <input type="text" class="form-control" id="solutionNumber" placeholder="5 Digit Solution Number">
+        <input type="text" class="form-control" id="solutionNumber" placeholder="5 Digit Solution Number" required>
       </div>
     </div>
   </div>
@@ -88,20 +88,20 @@
     <!-- Flex container for the first column of inputs -->
     <div class="d-flex flex-column align-items-center first-column" style="width: 48%;"> <!-- Adjusted width to double the original -->
       <!-- Inputs for E-Signature and Printed Name -->
-      <input type="text" class="form-control cursive-input mb-2" id="repSignature" placeholder="John Doe" oninput="copyName('signature')" required style="max-width: none;">
+      <input type="text" class="form-control cursive-input mb-2" id="repSignature" placeholder="John Doe" oninput="copyName('signature')" required style="max-width: none;" required>
       <label for="repSignature">Rep's E-Signature</label>
       
-      <input type="text" class="form-control mb-2" id="repPrintedName" placeholder="Rep's Name" oninput="copyName('printed')" required style="max-width: none;">
+      <input type="text" class="form-control mb-2" id="repPrintedName" placeholder="Rep's Name" oninput="copyName('printed')" required style="max-width: none;" required>
       <label for="repPrintedName">Rep's Printed Name (as signed)</label>
       
-      <input type="date" class="form-control mb-2" id="todaysDate" style="max-width: none;">
+      <input type="date" class="form-control mb-2" id="todaysDate" style="max-width: none;" required>
       <label for="todaysDate">Today's Date</label> 
     </div>
 
     <!-- Flex container for the second column of inputs -->
     <div class="d-flex flex-column align-items-center second-column" style="width: 48%;"> <!-- Adjusted width to double the original -->
       <!-- Select for Proctored RVP dropdown -->
-      <select class="form-control mb-2" id="proctored-rvp-search" name="proctored_rvp" style="width: 100% !important;">
+      <select class="form-control mb-2" id="proctored-rvp-search" name="proctored_rvp" style="width: 100% !important;" required>
         <option value="">Select a Proctored RVP</option>
         <% Rvp.proctor.order(:first_name, :last_name).each do |rvp| %>
           <option value="<%= rvp.id %>"><%= "#{rvp.first_name} #{rvp.last_name} - #{rvp.solution_number}" %></option>
@@ -109,7 +109,7 @@
       </select>
       <label for="proctored-rvp-search">ACM Proctor's Name</label>
       
-      <input type="date" class="form-control mb-2" id="acmCompletionDate" placeholder="Date of ACM Completion" style="max-width: none;">
+      <input type="date" class="form-control mb-2" id="acmCompletionDate" placeholder="Date of ACM Completion" style="max-width: none;" required>
       <label for="acmCompletionDate">Date of ACM Completion</label>
     </div>
 
@@ -286,9 +286,51 @@ $(document).ready(function() {
         const repSignature = document.getElementById('repSignature').value;
         const selectedRVP = document.getElementById('rvp').value;
 
+        // Ensure the required fields are filled
+        
+        // Check if Full Name is complete
+        if (!fullName) {
+            alert("Full Name is required.");
+            return;
+        }
+
+        // Check if RVP is selected
+        var rvpSelected = $('#rvp').val();
+        if (!rvpSelected) {
+            // If RVP is not selected, show an error message
+            alert('Please select your RVP.');
+            return; // Stop here if no RVP selected
+        }
+
+        // Check if rep solution number is complete
+        const solutionNumber = $('#solutionNumber').val().trim();
+        if (!solutionNumber) {
+            alert('Rep Solution Number is required.'); 
+            isValid = false; // Mark the form as invalid.
+            return;
+        }
+
+        // Check if rep's signature is complete 
         if (!repSignature) {
             alert("Rep's E-Signature is required.");
             return;
+        }
+
+        // Check if Proctored RVP is selected
+        var proctoredRvpSelected = $('#proctored-rvp-search').val();
+        if (!proctoredRvpSelected) {
+            // If Proctored RVP is not selected, show an error message
+            alert('Please select the RVP who proctored your ACM.');
+            isValid = false; // Mark the form as invalid.
+            return;
+        }
+
+        // Check if rep solution number is complete
+        const acmCompletionDate = $('#acmCompletionDate').val().trim();
+        if (!acmCompletionDate) {
+              alert('Please select the date you completed your ACM.'); 
+              isValid = false; // Mark the form as invalid.
+              return;
         }
 
         // Temporarily disable select2 for PDF generation
